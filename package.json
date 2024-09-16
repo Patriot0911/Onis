@@ -1,0 +1,17 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "web:dev": "npx lerna run dev --scope=web",
+    "api:dev": "npx lerna run dev --scope=api"
+  },
+  "dependencies": {
+    "root": "file:"
+  },
+  "devDependencies": {
+    "lerna": "^8.1.8"
+  }
+}
