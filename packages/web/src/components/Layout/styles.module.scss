@@ -1,0 +1,22 @@
+.global-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    width: 100%;
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+    }
+    footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
