@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
 import { MongoModule } from './modules/MongoModule';
+import { AuthModule } from './modules/AuthModule';
 
 @Module({
   controllers: [AppController],
@@ -12,6 +13,7 @@ import { MongoModule } from './modules/MongoModule';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    AuthModule,
   ],
 })
 export class AppModule {}
