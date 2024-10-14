@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongoModule } from './modules/MongoModule';
 import { AuthModule } from './modules/AuthModule';
+import { UserModule } from './modules/UserModule';
 
 @Module({
   controllers: [AppController],
@@ -14,6 +15,7 @@ import { AuthModule } from './modules/AuthModule';
       isGlobal: true,
     }),
     AuthModule,
+    UserModule,
   ],
 })
 export class AppModule {}

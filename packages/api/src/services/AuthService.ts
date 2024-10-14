@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { UserService } from './UserService';
@@ -12,6 +13,7 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async getMe(user: User): Promise<User> {
@@ -30,7 +32,9 @@ export class AuthService {
 
     const payload = { sub: user.id, username: user.username };
     res.cookie('userToken', this.jwtService.sign(payload), {
-      expires: new Date(Date.now() + 3600000),
+      expires: new Date(
+        Date.now() + this.configService.get<number>('JWT_EXPIRES') * 1000,
+      ),
     });
   }
 
