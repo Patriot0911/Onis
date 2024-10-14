@@ -14,11 +14,11 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async getMe(user: User) {
+  async getMe(user: User): Promise<User> {
     return this.userService.findByUsername(user.username);
   }
 
-  async login(res: Response, { username, password }: LoginDTO) {
+  async login(res: Response, { username, password }: LoginDTO): Promise<void> {
     const user = await this.userService.findByUsername(username);
     if (!user) {
       throw new BadRequestException('User with this username dont exists');
@@ -34,11 +34,11 @@ export class AuthService {
     });
   }
 
-  async logout(res: Response) {
-    res.cookie('userToken', '', { expires: new Date(Date.now()) });
+  async logout(res: Response): Promise<void> {
+    res.clearCookie('userToken');
   }
 
-  async register({ username, password, avatar }: CreateUserDTO) {
+  async register({ username, password, avatar }: CreateUserDTO): Promise<User> {
     const user = await this.userService.findByUsername(username);
     if (user) {
       throw new BadRequestException('User with this username already exists');
