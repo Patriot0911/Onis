@@ -3,9 +3,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from './UserSchema';
 import { Collection } from './CollectionSchema';
 
-enum RoleName {
-  OWNER,
-  MODERATOR,
+export enum RoleName {
+  OWNER = 'OWNER',
+  MODERATOR = 'MODERATOR',
 }
 
 @Schema()

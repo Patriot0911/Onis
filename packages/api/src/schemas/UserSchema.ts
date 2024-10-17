@@ -13,7 +13,9 @@ export class User extends Document {
   @Prop()
   password: string;
 
-  @Prop()
+  @Prop({
+    default: '',
+  })
   avatar: string;
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Collection' })
