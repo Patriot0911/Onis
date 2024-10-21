@@ -1,3 +1,2 @@
-DATABASE_URL=
-SECRET=
-JWT_EXPIRES=86400
+DATABASE_URL="mongodb+srv://johndoe:password@cluster0.njaio.mongodb.net/"
+SECRET="some secret"
