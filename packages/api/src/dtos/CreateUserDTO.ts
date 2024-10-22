@@ -1,9 +1,9 @@
-import { IsString, IsOptional, IsUrl } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
 import { LoginDTO } from './LoginDTO';
 
 export class CreateUserDTO extends LoginDTO {
-  @IsOptional()
-  @IsString({ message: 'Avatar must be a string' })
-  @IsUrl({}, { message: 'Avatar must be a valid URL' })
-  avatar: string = '';
+  @IsNotEmpty()
+  @IsString()
+  @IsEmail()
+  email: string;
 }

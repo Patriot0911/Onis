@@ -16,10 +16,15 @@ export class Participant extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Collection' })
   collect: Collection;
 
-  @Prop()
+  @Prop({
+    required: true,
+    enum: RoleName,
+  })
   roleName: RoleName;
 
-  @Prop()
+  @Prop({
+    default: [],
+  })
   grants: string[];
 }
 

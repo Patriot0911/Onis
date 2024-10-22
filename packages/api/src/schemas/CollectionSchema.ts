@@ -10,10 +10,14 @@ export enum Status {
 
 @Schema()
 export class Collection extends Document {
-  @Prop()
+  @Prop({
+    required: true,
+  })
   title: string;
 
-  @Prop()
+  @Prop({
+    required: false,
+  })
   description: string;
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'User' })

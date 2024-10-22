@@ -17,11 +17,11 @@ export class AuthService {
   ) {}
 
   async getMe(user: User): Promise<User> {
-    return this.userService.findByUsername(user.username);
+    return this.userService.findByLogin(user.username);
   }
 
   async login(res: Response, { username, password }: LoginDTO): Promise<void> {
-    const user = await this.userService.findByUsername(username);
+    const user = await this.userService.findByLogin(username);
     if (!user) {
       throw new BadRequestException('User with this username does not exists');
     }
@@ -42,17 +42,15 @@ export class AuthService {
     res.clearCookie('userToken');
   }
 
-  async register({ username, password, avatar }: CreateUserDTO): Promise<User> {
-    const user = await this.userService.findByUsername(username);
-    if (user) {
-      throw new BadRequestException('User with this username already exists');
-    }
+  async register({ username, email, password }: CreateUserDTO): Promise<User> {
+    await this.userService.checkIsUsernameUnique(username);
+    await this.userService.checkIsEmailUnique(email);
 
     const hashedPassword = await bcrypt.hash(password, 10);
     return this.userService.create({
       username,
+      email,
       password: hashedPassword,
-      avatar,
     });
   }
 }
