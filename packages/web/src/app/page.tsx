@@ -1,9 +1,7 @@
+import { redirect } from "next/navigation";
+
 const Page = () => {
-    return (
-        <>
-            Hello
-        </>
-    );
+    return redirect("/auth");
 };
 
 export default Page;
