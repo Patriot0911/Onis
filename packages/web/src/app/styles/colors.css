@@ -1,0 +1,14 @@
+:root {
+    /*  Basic Colors */
+    --color-secondary: #B2D1FF;
+    --color-primary: #477CCC;
+    --color-danger: #FF0606;
+
+    /*  Default Colors */
+    --color-yellow: #E4E71D;
+
+    /*  Light hues */
+    --color-light: #FFFFFF;
+    --color-light-gray: #D8D8D8;
+    --color-gray: #8E8E93;
+}
