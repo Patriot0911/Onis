@@ -1,32 +1,34 @@
 'use client';
 
-import { registerUser } from '@/services/auth';
+import { loginUser, registerUser } from '@/services/auth';
 import { useEffect, useState } from 'react';
 import EmailOrNicknameInput from './Partial/EmailOrNicknameInput';
 import NicknameInput from './Partial/NicknameInput';
 import PasswordInput from './Partial/PasswordInput';
 
 const AuthForm = () => {
+    const [hasError, setHasError] = useState(false);
+
     const [isLogin, setIsLogin] = useState(false);
     const [isDisabled, setIsDisabled] = useState(true);
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const [nickname, setNickname] = useState('');
+    const [username, setUsername] = useState('');
     const [emailOrNickname, setEmailOrNickname] = useState('');
     const [password, setPassword] = useState('');
 
     useEffect(() => {
         setIsDisabled(
-            (!isLogin && nickname.trim() === '')
+            (!isLogin && username.trim() === '')
             || emailOrNickname.trim() === ''
             || password.trim() === ''
         ); 
         setHasSubmitted(false);
-    }, [isLogin, nickname, emailOrNickname, password]);
+    }, [isLogin, username, emailOrNickname, password]);
 
     const toggleForm = () => {
         setIsLogin(!isLogin);
-        setNickname('');
+        setUsername('');
         setEmailOrNickname('');
         setPassword('');
     };
@@ -42,9 +44,11 @@ const AuthForm = () => {
         try {
             if (isLogin) {
                 console.log('Logging in with:', { emailOrNickname, password });
+                const response = await loginUser(emailOrNickname, password);
+                console.log('Logged in:', response);
             } else {
-                console.log('Registering with:', { nickname, emailOrNickname, password });
-                const response = await registerUser(nickname, emailOrNickname, password);
+                console.log('Registering with:', { username, emailOrNickname, password });
+                const response = await registerUser(username, emailOrNickname, password);
                 console.log('Registered:', response);
             }
         } catch (error) {
@@ -60,16 +64,16 @@ const AuthForm = () => {
             </h1>
             <div className="flex flex-col pt-4 w-[500px]">
                 {!isLogin && (
-                    <div className='flex flex-col mb-4'>
+                    <div className='flex flex-col'>
                         <NicknameInput
-                            value={nickname}
-                            onChange={setNickname}
+                            value={username}
+                            onChange={setUsername}
                             isLogin={isLogin}
                             hasSubmitted={hasSubmitted}
                         />
                     </div>
                 )}
-                <div className='flex flex-col mb-4'>
+                <div className='flex flex-col'>
                     <EmailOrNicknameInput
                         value={emailOrNickname}
                         onChange={setEmailOrNickname}
@@ -77,7 +81,7 @@ const AuthForm = () => {
                         hasSubmitted={hasSubmitted}
                     />
                 </div>
-                <div className='flex flex-col mb-4'>
+                <div className='flex flex-col'>
                     <PasswordInput
                         value={password}
                         onChange={setPassword}

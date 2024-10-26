@@ -49,7 +49,9 @@ const PasswordInput = ({ value, onChange, hasSubmitted }: PasswordInputProps) =>
                     )}
                 </div>
             </div>
-            {error && hasSubmitted && <p className="text-red-500 mt-2">{error}</p>}
+            <div className='h-6 my-2'>
+                {error && hasSubmitted && <p className="text-red-500">{error}</p>}
+            </div>
         </>
     );
 };

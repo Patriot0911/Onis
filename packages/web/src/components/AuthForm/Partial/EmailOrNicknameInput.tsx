@@ -30,7 +30,9 @@ const EmailOrNicknameInput = ({ value, onChange, isLogin, hasSubmitted }: EmailO
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
             />
-            {error && hasSubmitted && <p className="text-red-500 mt-2">{error}</p>}
+            <div className='h-6 my-2'>
+                {error && hasSubmitted && <p className="text-red-500">{error}</p>}
+            </div>
         </>
     );
 };
