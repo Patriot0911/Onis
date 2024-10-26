@@ -1,6 +1,6 @@
 import { geistMono, geistSans, } from '@/libs/fonts';
+import { BasicLayout } from '@/components/Layout';
 import { PropsWithChildren, } from 'react';
-import Layout from '@/components/Layout';
 import type { Metadata, } from 'next';
 
 import './styles/global.css';
@@ -16,9 +16,9 @@ const RootLayout = ({ children, }: Readonly<PropsWithChildren>) => {
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <Layout>
+                <BasicLayout>
                     {children}
-                </Layout>
+                </BasicLayout>
             </body>
         </html>
     );
