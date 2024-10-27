@@ -2,7 +2,12 @@ import { PropsWithChildren, } from 'react';
 
 import styles from './styles.module.scss';
 
-const BasicLayout = ({ children, }: PropsWithChildren) => {
+interface IBasicLayoutProps extends PropsWithChildren {
+    redirectOnLogged?: boolean;
+};
+
+const BasicLayout = ({ children, redirectOnLogged, }: IBasicLayoutProps) => {
+    // check if user is logged in and redirect
     return (
         <div
             className={styles['global-wrapper']}
