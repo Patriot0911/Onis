@@ -20,18 +20,4 @@ export class UserService {
       })
       .exec();
   }
-
-  async checkIsUsernameUnique(username: string) {
-    const user = await this.findByLogin(username);
-
-    if (user)
-      throw new BadRequestException('User with this username already exists');
-  }
-
-  async checkIsEmailUnique(email: string) {
-    const user = await this.findByLogin(email);
-
-    if (user)
-      throw new BadRequestException('User with this email already exists');
-  }
 }
