@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '../schemas/UserSchema';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,7 +13,7 @@ export class UserService {
     return user.save();
   }
 
-  async findByLogin(username: string): Promise<User> {
+  async findByUsername(username: string): Promise<User> {
     return this.userModel
       .findOne({
         $or: [{ username }, { email: username }],

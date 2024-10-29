@@ -17,11 +17,11 @@ export class AuthService {
   ) {}
 
   async getMe(user: User): Promise<User> {
-    return this.userService.findByLogin(user.username);
+    return this.userService.findByUsername(user.username);
   }
 
   async login(res: Response, { username, password }: LoginDTO): Promise<void> {
-    const user = await this.userService.findByLogin(username);
+    const user = await this.userService.findByUsername(username);
     if (!user) {
       throw new BadRequestException('User with this username does not exists');
     }

@@ -13,7 +13,10 @@ export class CollectionService {
     @InjectModel(Participant.name) private participantModel: Model<Participant>,
   ) {}
 
-  async create(data: CreateCollectionDTO, userId: mongoose.Types.ObjectId) {
+  async create(
+    data: CreateCollectionDTO,
+    userId: mongoose.Types.ObjectId,
+  ): Promise<Collection> {
     const collection = new this.collectionModel(data);
 
     const participant = new this.participantModel({
@@ -27,5 +30,13 @@ export class CollectionService {
 
     collection.participants.push(participant.id);
     return collection.save();
+  }
+
+  async getAll(): Promise<Collection[]> {
+    return this.collectionModel.find();
+  }
+
+  async get(id: string): Promise<Collection> {
+    return this.collectionModel.findOne({ _id: id });
   }
 }
