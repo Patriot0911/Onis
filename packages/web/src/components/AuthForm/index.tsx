@@ -1,14 +1,12 @@
 'use client';
 
-import { loginUser, registerUser } from '@/services/auth';
-import { useEffect, useState } from 'react';
 import EmailOrNicknameInput from './Partial/EmailOrNicknameInput';
-import NicknameInput from './Partial/NicknameInput';
 import PasswordInput from './Partial/PasswordInput';
+import NicknameInput from './Partial/NicknameInput';
+import AuthClientService from '@/services/auth';
+import { useEffect, useState, } from 'react';
 
 const AuthForm = () => {
-    const [hasError, setHasError] = useState(false);
-
     const [isLogin, setIsLogin] = useState(false);
     const [isDisabled, setIsDisabled] = useState(true);
     const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -22,7 +20,7 @@ const AuthForm = () => {
             (!isLogin && username.trim() === '')
             || emailOrNickname.trim() === ''
             || password.trim() === ''
-        ); 
+        );
         setHasSubmitted(false);
     }, [isLogin, username, emailOrNickname, password]);
 
@@ -44,11 +42,11 @@ const AuthForm = () => {
         try {
             if (isLogin) {
                 console.log('Logging in with:', { emailOrNickname, password });
-                const response = await loginUser(emailOrNickname, password);
+                const response = await AuthClientService.login(emailOrNickname, password);
                 console.log('Logged in:', response);
             } else {
                 console.log('Registering with:', { username, emailOrNickname, password });
-                const response = await registerUser(username, emailOrNickname, password);
+                const response = await AuthClientService.registerUser(username, emailOrNickname, password);
                 console.log('Registered:', response);
             }
         } catch (error) {

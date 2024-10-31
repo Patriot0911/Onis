@@ -13,11 +13,23 @@ export class UserService {
     return user.save();
   }
 
-  async findByLogin(username: string): Promise<User> {
+  async findByLoginOrEmail(emailOrUserName: string): Promise<User> {
     return this.userModel
       .findOne({
-        $or: [{ username }, { email: username }],
+        $or: [
+          {
+            username: emailOrUserName,
+          }, {
+            email: emailOrUserName,
+          },
+        ],
       })
+      .exec();
+  };
+
+  async findByLogin(username: string): Promise<User> {
+    return this.userModel
+      .findOne({ username, })
       .exec();
   }
 

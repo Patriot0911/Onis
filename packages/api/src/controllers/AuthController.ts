@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
-import { AuthService } from '../services/AuthService';
-import { LoginDTO } from '../dtos/LoginDTO';
-import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { UserRequest } from '../utils/security/UserRequest';
-import { User } from '../schemas/UserSchema';
-import { UserMapper } from '../mappers/UserMapper';
 import { UserResponse } from '../responses/UserResponse';
+import { AuthService } from '../services/AuthService';
+import { CreateUserDTO } from '../dtos/CreateUserDTO';
+import { AuthUserDTO } from 'src/dtos/AuthUserDTO';
+import { UserMapper } from '../mappers/UserMapper';
 import { Access } from '../utils/security/Access';
+import { User } from '../schemas/UserSchema';
+import { Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +23,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Res({ passthrough: true }) res: Response,
-    @Body() body: LoginDTO,
+    @Body() body: AuthUserDTO,
   ): Promise<void> {
     return this.authService.login(res, body);
   }
