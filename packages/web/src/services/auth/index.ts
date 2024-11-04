@@ -1,50 +1,51 @@
-'use server';
 
-export async function registerUser(username: string, email: string, password: string) {
-  console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
+class AuthClientService {
+  static API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      username,
-      email,
-      password,
-    }),
-  });
+  static AuthRoutes = {
+    login: `${this.API_URL}/auth/login`,
+    register: `${this.API_URL}/auth/register`,
+  };
 
-  console.log("res", res);
+  static async registerUser(username: string, email: string, password: string) {
+    if(!this.API_URL)
+      throw new Error('No API found');
 
-  if (!res.ok) {
-    const errorMessage = await res.text();
-    throw new Error(`Failed to register: ${errorMessage}`);
-  }
+    const body = JSON.stringify({ username, email, password, });
+    const res = await fetch(this.AuthRoutes.register, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    });
 
-  return await res.json();
+    if (!res.ok) {
+      const errorMessage = await res.text();
+      throw new Error(`Failed to register: ${errorMessage}`);
+    };
+
+    return res.json();
+  };
+
+  static async login(emailOrUserName: string, password: string) {
+    const body = JSON.stringify({ emailOrUserName, password, });
+    const res = await fetch(this.AuthRoutes.login, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    });
+
+    if (!res.ok) {
+      const errorMessage = await res.text();
+      throw new Error(`Failed to login: ${errorMessage}`);
+    };
+
+    return res.json();
+  };
 };
 
-export async function loginUser(emailOrNickname: string, password: string) {
-  console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      emailOrNickname,
-      password,
-    }),
-  });
-
-  console.log("res", res);
-
-  if (!res.ok) {
-    const errorMessage = await res.text();
-    throw new Error(`Failed to login: ${errorMessage}`);
-  }
-
-  return await res.json();
-};
+export default AuthClientService;

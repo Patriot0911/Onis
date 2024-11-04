@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { CreateUserDTO } from '../dtos/CreateUserDTO';
+import { AuthUserDTO } from 'src/dtos/AuthUserDTO';
 import { ConfigService } from '@nestjs/config';
+import { User } from '../schemas/UserSchema';
+import { UserService } from './UserService';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
-import { UserService } from './UserService';
-import { LoginDTO } from '../dtos/LoginDTO';
-import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import * as bcrypt from 'bcrypt';
-import { User } from '../schemas/UserSchema';
 
 @Injectable()
 export class AuthService {
@@ -20,8 +20,8 @@ export class AuthService {
     return this.userService.findByLogin(user.username);
   }
 
-  async login(res: Response, { username, password }: LoginDTO): Promise<void> {
-    const user = await this.userService.findByLogin(username);
+  async login(res: Response, { emailOrUserName, password }: AuthUserDTO): Promise<void> {
+    const user = await this.userService.findByLoginOrEmail(emailOrUserName);
     if (!user) {
       throw new BadRequestException('User with this username does not exists');
     }
