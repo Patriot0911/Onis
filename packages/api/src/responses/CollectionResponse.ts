@@ -8,6 +8,6 @@ export class CollectionResponse {
   createdAt: Date;
 }
 
-export class CollectionResponses {
+export class CollectionsResponse {
   collections: CollectionResponse[];
 }

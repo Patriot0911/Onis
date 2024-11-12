@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { CollectionService } from '../services/CollectionService';
 import { UserRequest } from '../utils/security/UserRequest';
 import { User } from '../schemas/UserSchema';
@@ -8,8 +8,10 @@ import { ObjectIdPipe } from '../utils/pipes/ObjectIdPipe';
 import { CollectionMapper } from '../mappers/CollectionMapper';
 import {
   CollectionResponse,
-  CollectionResponses,
+  CollectionsResponse,
 } from '../responses/CollectionResponse';
+import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
+import mongoose from 'mongoose';
 
 @Controller('collections')
 export class CollectionController {
@@ -26,7 +28,7 @@ export class CollectionController {
   }
 
   @Get()
-  async getAll(): Promise<CollectionResponses> {
+  async getAll(): Promise<CollectionsResponse> {
     const collections = await this.collectionService.getAll();
     return CollectionMapper.getCollectionResponses(collections);
   }
@@ -36,6 +38,16 @@ export class CollectionController {
     @Param('collectionId', ObjectIdPipe) collectionId: string,
   ): Promise<CollectionResponse> {
     const collection = await this.collectionService.get(collectionId);
+    return CollectionMapper.getCollectionResponse(collection);
+  }
+
+  @Access('collections.$collectionId.update')
+  @Patch(':collectionId')
+  async update(
+    @Param('collectionId', ObjectIdPipe) collctionId: mongoose.Types.ObjectId,
+    @Body() body: UpdateCollectionDTO,
+  ): Promise<CollectionResponse> {
+    const collection = await this.collectionService.update(collctionId, body);
     return CollectionMapper.getCollectionResponse(collection);
   }
 }

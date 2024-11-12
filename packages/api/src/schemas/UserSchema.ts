@@ -22,12 +22,23 @@ export class User extends Document {
   password: string;
 
   @Prop({
-    default: '',
+    default: null,
   })
   avatar: string;
 
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'Collection' })
+  @Prop({
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Collection',
+    default: [],
+  })
   collections: Collection[];
+
+  @Prop({
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Collection',
+    default: [],
+  })
+  savedCollection: Collection[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import mongoose, { Model } from 'mongoose';
 import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
 import { InjectModel } from '@nestjs/mongoose';
 import { Collection } from '../schemas/CollectionSchema';
 import { Participant, RoleName } from '../schemas/ParticipantSchema';
 import { Grants } from './ParticipantService';
+import mongoose, { Model } from 'mongoose';
+import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
 
 @Injectable()
 export class CollectionService {
@@ -38,5 +39,12 @@ export class CollectionService {
 
   async get(id: string): Promise<Collection> {
     return this.collectionModel.findOne({ _id: id });
+  }
+
+  async update(
+    id: mongoose.Types.ObjectId,
+    data: UpdateCollectionDTO,
+  ): Promise<Collection> {
+    return this.collectionModel.findByIdAndUpdate(id, data, { new: true });
   }
 }

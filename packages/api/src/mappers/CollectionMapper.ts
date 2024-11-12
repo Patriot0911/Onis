@@ -1,7 +1,7 @@
 import { Collection } from '../schemas/CollectionSchema';
 import {
   CollectionResponse,
-  CollectionResponses,
+  CollectionsResponse,
 } from '../responses/CollectionResponse';
 
 export class CollectionMapper {
@@ -17,7 +17,7 @@ export class CollectionMapper {
 
   static getCollectionResponses(
     collections: Collection[],
-  ): CollectionResponses {
+  ): CollectionsResponse {
     return {
       collections: collections.map(CollectionMapper.getCollectionResponse),
     };
