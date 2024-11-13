@@ -4,14 +4,15 @@ import { UserRequest } from '../utils/security/UserRequest';
 import { User } from '../schemas/UserSchema';
 import { Access } from '../utils/security/Access';
 import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
-import { ObjectIdPipe } from '../utils/pipes/ObjectIdPipe';
 import { CollectionMapper } from '../mappers/CollectionMapper';
 import {
   CollectionResponse,
   CollectionsResponse,
 } from '../responses/CollectionResponse';
 import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
+import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
 import { Types } from 'mongoose';
+import { ObjectIdPipe } from '../utils/pipes/ObjectIdPipe';
 import { ChangeFieldsDTO } from 'src/dtos/ChangeFieldsDTO';
 
 @Controller('collections')
@@ -36,7 +37,7 @@ export class CollectionController {
 
   @Get(':collectionId')
   async get(
-    @Param('collectionId', ObjectIdPipe) collectionId: string,
+    @Param('collectionId', CollectionByIdPipe) collectionId: string,
   ): Promise<CollectionResponse> {
     const collection = await this.collectionService.get(collectionId);
     return CollectionMapper.getCollectionResponse(collection);
@@ -48,7 +49,7 @@ export class CollectionController {
     @Param('collectionId', ObjectIdPipe) collctionId: Types.ObjectId,
     @Body() body: UpdateCollectionDTO,
   ): Promise<CollectionResponse> {
-    const collection = await this.collectionService.update(collctionId, body);
+    const collection = await this.collectionService.update(collectionId, body);
     return CollectionMapper.getCollectionResponse(collection);
   }
 

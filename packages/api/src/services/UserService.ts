@@ -36,4 +36,18 @@ export class UserService {
       .findOne({ username, })
       .exec();
   }
+
+  saveCollection(id: string, collectionId: string) {
+    return this.userModel.updateOne(
+      { _id: id },
+      { $addToSet: { savedCollections: collectionId } },
+    );
+  }
+
+  removeCollection(id: string, collectionId: string) {
+    return this.userModel.updateOne(
+      { _id: id },
+      { $pull: { savedCollections: collectionId } },
+    );
+  }
 }
