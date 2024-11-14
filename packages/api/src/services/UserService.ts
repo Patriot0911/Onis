@@ -1,8 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '../schemas/UserSchema';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 
 @Injectable()
 export class UserService {
@@ -13,7 +13,11 @@ export class UserService {
     return user.save();
   }
 
-  async findByLoginOrEmail(emailOrUserName: string): Promise<User> {
+  async findById(id: mongoose.Schema.Types.ObjectId): Promise<User> {
+    return this.userModel.findById(id);
+  }
+
+  async findByLoginOrEmail(username: string): Promise<User> {
     return this.userModel
       .findOne({
         $or: [
@@ -31,19 +35,5 @@ export class UserService {
     return this.userModel
       .findOne({ username, })
       .exec();
-  }
-
-  async checkIsUsernameUnique(username: string) {
-    const user = await this.findByLogin(username);
-
-    if (user)
-      throw new BadRequestException('User with this username already exists');
-  }
-
-  async checkIsEmailUnique(email: string) {
-    const user = await this.findByLogin(email);
-
-    if (user)
-      throw new BadRequestException('User with this email already exists');
   }
 }

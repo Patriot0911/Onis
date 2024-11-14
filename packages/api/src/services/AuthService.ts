@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async getMe(user: User): Promise<User> {
-    return this.userService.findByLogin(user.username);
+    return this.userService.findById(user.id);
   }
 
   async login(res: Response, { emailOrUserName, password }: AuthUserDTO): Promise<void> {
@@ -43,9 +43,6 @@ export class AuthService {
   }
 
   async register({ username, email, password }: CreateUserDTO): Promise<User> {
-    await this.userService.checkIsUsernameUnique(username);
-    await this.userService.checkIsEmailUnique(email);
-
     const hashedPassword = await bcrypt.hash(password, 10);
     return this.userService.create({
       username,
