@@ -17,11 +17,23 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
-  async findByLogin(username: string): Promise<User> {
+  async findByLoginOrEmail(username: string): Promise<User> {
     return this.userModel
       .findOne({
-        $or: [{ username }, { email: username }],
+        $or: [
+          {
+            username: emailOrUserName,
+          }, {
+            email: emailOrUserName,
+          },
+        ],
       })
+      .exec();
+  };
+
+  async findByLogin(username: string): Promise<User> {
+    return this.userModel
+      .findOne({ username, })
       .exec();
   }
 }

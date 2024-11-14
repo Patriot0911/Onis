@@ -1,4 +1,7 @@
 :root {
+    --color-bg-secondary: #EDF2FA;
+    --color-bg-primary: #477CCC;
+
     /*  Basic Colors */
     --color-secondary: #B2D1FF;
     --color-primary: #477CCC;

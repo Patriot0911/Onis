@@ -9,6 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        'bg-secondary': 'var(--color-bg-secondary)',
+        'bg-primary': 'var(--color-bg-primary)',
         primary: 'var(--color-primary)',
         secondary: 'var(--color-secondary)',
         danger: 'var(--color-danger)',
