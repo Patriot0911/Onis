@@ -17,7 +17,7 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
-  async findByLoginOrEmail(username: string): Promise<User> {
+  async findByLoginOrEmail(emailOrUserName: string): Promise<User> {
     return this.userModel
       .findOne({
         $or: [
