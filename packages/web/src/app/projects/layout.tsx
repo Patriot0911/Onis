@@ -1,8 +1,8 @@
 import { ExtendedLayout } from '@/components/Layout';
-import { PropsWithChildren, } from 'react';
 import type { Metadata, } from 'next';
+import { PropsWithChildren, } from 'react';
 
-import './styles/global.css';
+import '../styles/global.css';
 
 export const metadata: Metadata = {
     title: 'Onis',
