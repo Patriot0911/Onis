@@ -16,6 +16,7 @@ class AuthClientService {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body,
     });
 
@@ -34,6 +35,7 @@ class AuthClientService {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body,
     });
 
