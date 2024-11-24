@@ -1,4 +1,5 @@
 import { PropsWithChildren, } from 'react';
+import { LogIn } from './Partial';
 
 import styles from './styles.module.scss';
 
@@ -12,6 +13,7 @@ const BasicLayout = ({ children, redirectOnLogged, }: IBasicLayoutProps) => {
         <div
             className={styles['global-wrapper']}
         >
+            <LogIn />
             <main className={'bg-bg-primary'}>{children}</main>
         </div>
     );
