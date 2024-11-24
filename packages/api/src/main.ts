@@ -5,7 +5,7 @@ import { AppModule } from './AppModule';
 import { ExceptionsFilter } from './utils/exceptions/ExceptionsFilter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true, });
 
   app.use(cookieParser());
   app.useGlobalFilters(new ExceptionsFilter());
