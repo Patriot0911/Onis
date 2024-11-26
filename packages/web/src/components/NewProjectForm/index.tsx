@@ -2,13 +2,11 @@
 
 import CollectionsService from "@/services/collections";
 import { useEffect, useState } from "react";
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTrigger,
-} from "../ui/Dialog";
+import Dialog from "../ui/Dialog";
+import DialogContent from "../ui/Dialog/DialogContent";
+import DialogFooter from "../ui/Dialog/DialogFooter";
+import DialogHeader from "../ui/Dialog/DialogHeader";
+import DialogTrigger from "../ui/Dialog/DialogTrigger";
 import DescriptionInput from "./DescriptionInput";
 import NameInput from "./NameInput";
 import ThumbnailInput from "./ThumbnailInput";
