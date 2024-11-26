@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Participant } from '../schemas/ParticipantSchema';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 export const Grants = {
   all: (collectionId) => `collections.${collectionId}.*`,
@@ -13,10 +13,11 @@ export class ParticipantService {
     @InjectModel(Participant.name) private participantModel: Model<Participant>,
   ) {}
 
-  async hasPermission(userId: string, permission: string): Promise<boolean> {
-    const roles = await this.participantModel.find({
-      user: userId,
-    });
+  async hasPermission(
+    userId: Types.ObjectId,
+    permission: string,
+  ): Promise<boolean> {
+    const roles = await this.participantModel.find({});
     return this.hasPermissionInRoles(roles, permission);
   }
 

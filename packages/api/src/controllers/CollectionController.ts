@@ -11,7 +11,8 @@ import {
   CollectionsResponse,
 } from '../responses/CollectionResponse';
 import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
+import { ChangeFieldsDTO } from 'src/dtos/ChangeFieldsDTO';
 
 @Controller('collections')
 export class CollectionController {
@@ -44,10 +45,19 @@ export class CollectionController {
   @Access('collections.$collectionId.update')
   @Patch(':collectionId')
   async update(
-    @Param('collectionId', ObjectIdPipe) collctionId: mongoose.Types.ObjectId,
+    @Param('collectionId', ObjectIdPipe) collctionId: Types.ObjectId,
     @Body() body: UpdateCollectionDTO,
   ): Promise<CollectionResponse> {
     const collection = await this.collectionService.update(collctionId, body);
     return CollectionMapper.getCollectionResponse(collection);
+  }
+
+  @Access('collections.$collectionId.fields.change')
+  @Patch(':collectionId/fields')
+  async ChangeFields(
+    @Param('collectionId', ObjectIdPipe) collectionId: Types.ObjectId,
+    @Body() body: ChangeFieldsDTO,
+  ) {
+    return this.collectionService.changeFields(collectionId, body);
   }
 }

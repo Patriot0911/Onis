@@ -6,6 +6,7 @@ import { Request } from 'express';
 import { User } from '../../schemas/UserSchema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UserMapper } from 'src/mappers/UserMapper';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -34,12 +35,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     const user: User = await this.userModel.findById(payload.sub);
 
-    delete user.password;
-
     if (!user) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    return UserMapper.getUserResponse(user);
   }
 }

@@ -4,13 +4,17 @@ import { Status } from 'src/schemas/CollectionSchema';
 export class UpdateCollectionDTO {
   @IsOptional()
   @IsString()
-  title: string;
+  title?: string;
 
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @IsOptional()
   @IsEnum(Status)
-  status: Status;
+  status?: Status;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
 }

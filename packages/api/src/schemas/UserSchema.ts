@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Collection } from './CollectionSchema';
-import mongoose, { Document } from 'mongoose';
+import { Types, Document } from 'mongoose';
 
 @Schema()
 export class User extends Document {
@@ -27,18 +27,18 @@ export class User extends Document {
   avatar: string;
 
   @Prop({
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [Types.ObjectId],
     ref: 'Collection',
     default: [],
   })
   collections: Collection[];
 
   @Prop({
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [Types.ObjectId],
     ref: 'Collection',
     default: [],
   })
-  savedCollection: Collection[];
+  savedCollections: Collection[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

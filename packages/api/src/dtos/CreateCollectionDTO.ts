@@ -7,5 +7,9 @@ export class CreateCollectionDTO {
 
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
 }

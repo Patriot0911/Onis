@@ -4,7 +4,7 @@ import { UserResponse } from '../responses/UserResponse';
 export class UserMapper {
   static getUserResponse(user: User): UserResponse {
     return {
-      id: user._id as string,
+      id: user.id,
       username: user.username,
       avatar: user.avatar,
     };

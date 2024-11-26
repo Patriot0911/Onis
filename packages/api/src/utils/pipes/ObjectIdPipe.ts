@@ -1,12 +1,12 @@
 import { PipeTransform } from '@nestjs/common';
-import { isValidObjectId } from 'mongoose';
+import { isValidObjectId, Types } from 'mongoose';
 import { InvalidEntityIdException } from '../exceptions/InvalidEntityIdException';
 
-export class ObjectIdPipe implements PipeTransform<string, string> {
-  transform(id: string): string {
+export class ObjectIdPipe implements PipeTransform<string, Types.ObjectId> {
+  transform(id: string): Types.ObjectId {
     if (!isValidObjectId(id)) {
       throw new InvalidEntityIdException('Entity');
     }
-    return id;
+    return new Types.ObjectId(id);
   }
 }

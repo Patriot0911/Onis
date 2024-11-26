@@ -4,12 +4,14 @@ import { User, UserSchema } from '../schemas/UserSchema';
 import { ConfigService } from '@nestjs/config';
 import { Participant, ParticipantSchema } from '../schemas/ParticipantSchema';
 import { Collection, CollectionSchema } from '../schemas/CollectionSchema';
+import { Field, FieldSchema } from 'src/schemas/FieldSchema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Participant.name, schema: ParticipantSchema },
       { name: Collection.name, schema: CollectionSchema },
+      { name: Field.name, schema: FieldSchema },
+      { name: Participant.name, schema: ParticipantSchema },
       { name: User.name, schema: UserSchema },
     ]),
     MongooseModule.forRootAsync({
