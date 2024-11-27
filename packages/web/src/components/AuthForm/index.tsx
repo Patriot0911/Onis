@@ -1,10 +1,10 @@
 'use client';
 
-import EmailOrNicknameInput from './Partial/EmailOrNicknameInput';
-import PasswordInput from './Partial/PasswordInput';
-import NicknameInput from './Partial/NicknameInput';
 import AuthClientService from '@/services/auth';
 import { useEffect, useState, } from 'react';
+import EmailOrNicknameInput from './Partial/EmailOrNicknameInput';
+import NicknameInput from './Partial/NicknameInput';
+import PasswordInput from './Partial/PasswordInput';
 
 const AuthForm = () => {
     const [isLogin, setIsLogin] = useState(false);
@@ -41,13 +41,9 @@ const AuthForm = () => {
 
         try {
             if (isLogin) {
-                console.log('Logging in with:', { emailOrNickname, password });
                 const response = await AuthClientService.login(emailOrNickname, password);
-                console.log('Logged in:', response);
             } else {
-                console.log('Registering with:', { username, emailOrNickname, password });
                 const response = await AuthClientService.registerUser(username, emailOrNickname, password);
-                console.log('Registered:', response);
             }
         } catch (error) {
             console.error('Failed to register:', error);
@@ -88,8 +84,8 @@ const AuthForm = () => {
                 </div>
                 <button
                     onClick={handleSubmit}
-                    className="bg-blue-600 rounded-md p-5 text-white mt-2 disabled:bg-gray-400"
                     disabled={isDisabled}
+                    className="bg-blue-600 rounded-md p-5 text-white mt-2 disabled:bg-gray"
                 >
                     {isLogin ? 'Увійти' : 'Зареєструватися'}
                 </button>

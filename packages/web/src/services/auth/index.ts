@@ -1,4 +1,3 @@
-
 class AuthClientService {
   static API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -19,6 +18,7 @@ class AuthClientService {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body,
     });
 
@@ -38,6 +38,7 @@ class AuthClientService {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body,
     });
 
