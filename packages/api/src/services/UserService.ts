@@ -28,7 +28,7 @@ export class UserService {
   }
 
   async toggleCollection(id: Types.ObjectId, collectionId: Types.ObjectId) {
-    const user = await this.userModel.findOne({ _id: id });
+    const user = await this.userModel.findById(id);
 
     const isCollectionSaved = user.savedCollections.some(
       (savedCollectionId: Types.ObjectId) =>
@@ -39,6 +39,6 @@ export class UserService {
       ? { $pull: { savedCollections: collectionId } }
       : { $addToSet: { savedCollections: collectionId } };
 
-    return this.userModel.updateOne({ _id: id }, updateOperation);
+    return this.userModel.findByIdAndUpdate(id, updateOperation);
   }
 }
