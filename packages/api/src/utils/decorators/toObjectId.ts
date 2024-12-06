@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 export function ToObjectId(options: { each?: boolean; message?: string } = {}) {
   const { each = false, message } = options;
 
-  return function (target: Object, propertyName: string) {
+  return function (target: object, propertyName: string) {
     Transform(({ value }) => {
       if (each) {
         if (Array.isArray(value)) {

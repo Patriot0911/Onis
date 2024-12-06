@@ -1,9 +1,10 @@
 import { Status } from '../schemas/CollectionSchema';
+import { Participant } from '../schemas/ParticipantSchema';
 
 export class CollectionResponse {
   id: string;
   title: string;
-  participants: string[];
+  participants: Participant[];
   status: Status;
   createdAt: Date;
 }
