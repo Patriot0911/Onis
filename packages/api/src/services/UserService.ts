@@ -18,36 +18,27 @@ export class UserService {
   }
 
   async findByLoginOrEmail(emailOrUserName: string): Promise<User> {
-    return this.userModel
-      .findOne({
-        $or: [
-          {
-            username: emailOrUserName,
-          }, {
-            email: emailOrUserName,
-          },
-        ],
-      })
-      .exec();
-  };
+    return this.userModel.findOne({
+      $or: [{ username: emailOrUserName }, { email: emailOrUserName }],
+    });
+  }
 
   async findByLogin(username: string): Promise<User> {
-    return this.userModel
-      .findOne({ username, })
-      .exec();
+    return this.userModel.findOne({ username }).exec();
   }
 
-  saveCollection(id: string, collectionId: string) {
-    return this.userModel.updateOne(
-      { _id: id },
-      { $addToSet: { savedCollections: collectionId } },
-    );
-  }
+  async toggleCollection(id: Types.ObjectId, collectionId: Types.ObjectId) {
+    const user = await this.userModel.findOne({ _id: id });
 
-  removeCollection(id: string, collectionId: string) {
-    return this.userModel.updateOne(
-      { _id: id },
-      { $pull: { savedCollections: collectionId } },
+    const isCollectionSaved = user.savedCollections.some(
+      (savedCollectionId: Types.ObjectId) =>
+        savedCollectionId.equals(collectionId),
     );
+
+    const updateOperation = isCollectionSaved
+      ? { $pull: { savedCollections: collectionId } }
+      : { $addToSet: { savedCollections: collectionId } };
+
+    return this.userModel.updateOne({ _id: id }, updateOperation);
   }
 }

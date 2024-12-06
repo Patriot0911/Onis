@@ -12,7 +12,6 @@ import {
 import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
 import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
 import { Types } from 'mongoose';
-import { ObjectIdPipe } from '../utils/pipes/ObjectIdPipe';
 import { ChangeFieldsDTO } from 'src/dtos/ChangeFieldsDTO';
 
 @Controller('collections')
@@ -37,7 +36,7 @@ export class CollectionController {
 
   @Get(':collectionId')
   async get(
-    @Param('collectionId', CollectionByIdPipe) collectionId: string,
+    @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
   ): Promise<CollectionResponse> {
     const collection = await this.collectionService.get(collectionId);
     return CollectionMapper.getCollectionResponse(collection);
@@ -46,7 +45,7 @@ export class CollectionController {
   @Access('collections.$collectionId.update')
   @Patch(':collectionId')
   async update(
-    @Param('collectionId', ObjectIdPipe) collctionId: Types.ObjectId,
+    @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
     @Body() body: UpdateCollectionDTO,
   ): Promise<CollectionResponse> {
     const collection = await this.collectionService.update(collectionId, body);
@@ -56,9 +55,9 @@ export class CollectionController {
   @Access('collections.$collectionId.fields.change')
   @Patch(':collectionId/fields')
   async ChangeFields(
-    @Param('collectionId', ObjectIdPipe) collectionId: Types.ObjectId,
+    @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
     @Body() body: ChangeFieldsDTO,
-  ) {
+  ): Promise<void> {
     return this.collectionService.changeFields(collectionId, body);
   }
 }

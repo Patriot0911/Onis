@@ -1,28 +1,21 @@
-import { Controller, Delete, Param, Post } from '@nestjs/common';
+import { Controller, Param, Post } from '@nestjs/common';
 import { UserService } from '../services/UserService';
-import { UserByIdPipe } from '../utils/pipes/UserByIdPipe';
 import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
 import { Access } from '../utils/security/Access';
+import { Types } from 'mongoose';
+import { UserRequest } from '../utils/security/UserRequest';
+import { User } from '../schemas/UserSchema';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
   @Access()
-  @Post(':userId/collections/:collectionId/save')
-  saveCollection(
-    @Param('userId', UserByIdPipe) userId: string,
-    @Param('collectionId', CollectionByIdPipe) collectionId: string,
-  ): void {
-    this.userService.saveCollection(userId, collectionId);
-  }
-
-  @Access()
-  @Delete(':userId/collections/:collectionId/remove')
-  removeCollection(
-    @Param('userId', UserByIdPipe) userId: string,
-    @Param('collectionId', CollectionByIdPipe) collectionId: string,
-  ): void {
-    this.userService.removeCollection(userId, collectionId);
+  @Post('collections/:collectionId/toggle')
+  async toggleCollection(
+    @UserRequest() user: User,
+    @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
+  ): Promise<void> {
+    await this.userService.toggleCollection(user.id, collectionId);
   }
 }

@@ -9,7 +9,6 @@ import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
 import { ChangeFieldsDTO, UpdateField } from 'src/dtos/ChangeFieldsDTO';
 import { FieldService } from './FieldService';
 import { FieldDTO } from 'src/dtos/FieldDTO';
-import { InvalidEntityIdException } from 'src/utils/exceptions/InvalidEntityIdException';
 
 @Injectable()
 export class CollectionService {
@@ -44,7 +43,7 @@ export class CollectionService {
     return this.collectionModel.find();
   }
 
-  async get(id: string): Promise<Collection> {
+  async get(id: Types.ObjectId): Promise<Collection> {
     return this.collectionModel.findOne({ _id: id });
   }
 
@@ -67,7 +66,7 @@ export class CollectionService {
   async updateFields(collectionId: Types.ObjectId, data: UpdateField[]) {
     const fieldsIds = data.map((field) => field.id);
     await this.validateFields(collectionId, fieldsIds);
-    this.fieldService.updateFields(data);
+    await this.fieldService.updateFields(data);
   }
 
   async deleteFields(
@@ -76,7 +75,7 @@ export class CollectionService {
   ): Promise<void> {
     await this.validateFields(collectionId, fieldsIds);
 
-    this.fieldService.deleteFields(fieldsIds);
+    await this.fieldService.deleteFields(fieldsIds);
     this.collectionModel.updateOne(
       { _id: collectionId },
       {
@@ -96,18 +95,16 @@ export class CollectionService {
     data: FieldDTO[],
   ): Promise<void> {
     const fields = await this.fieldService.createFields(data);
-    this.collectionModel
-      .updateOne(
-        { _id: collectionId },
-        {
-          $push: {
-            fields: {
-              $each: fields.map((field) => field._id),
-            },
+    await this.collectionModel.updateOne(
+      { _id: collectionId },
+      {
+        $push: {
+          fields: {
+            $each: fields.map((field) => field._id),
           },
         },
-      )
-      .exec();
+      },
+    );
   }
 
   async validateFields(
@@ -118,12 +115,12 @@ export class CollectionService {
       await this.collectionModel.findById(collectionId);
 
     for (const fieldId of fieldsIds) {
-      const isFieldBelogToCollection = collectionFieldsIds.some(
+      const isFieldBelongToCollection = collectionFieldsIds.some(
         (collectionFieldId) =>
           collectionFieldId.toString() === fieldId.toString(),
       );
 
-      if (!isFieldBelogToCollection) {
+      if (!isFieldBelongToCollection) {
         throw new BadRequestException(
           `Field ${fieldId} does not in collection ${collectionId}}`,
         );
