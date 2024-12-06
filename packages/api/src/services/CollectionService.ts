@@ -58,15 +58,19 @@ export class CollectionService {
     collectionId: Types.ObjectId,
     body: ChangeFieldsDTO,
   ): Promise<void> {
-    await this.updateFields(collectionId, body.update);
-    await this.deleteFields(collectionId, body.delete);
-    await this.createFields(collectionId, body.create);
+    await Promise.all([
+      this.updateFields(collectionId, body.update),
+      this.deleteFields(collectionId, body.delete),
+      this.createFields(collectionId, body.create),
+    ]);
   }
 
   async updateFields(collectionId: Types.ObjectId, data: UpdateField[]) {
     const fieldsIds = data.map((field) => field.id);
-    await this.validateFields(collectionId, fieldsIds);
-    await this.fieldService.updateFields(data);
+    await Promise.all([
+      this.validateFields(collectionId, fieldsIds),
+      this.fieldService.updateFields(data),
+    ]);
   }
 
   async deleteFields(
@@ -75,19 +79,19 @@ export class CollectionService {
   ): Promise<void> {
     await this.validateFields(collectionId, fieldsIds);
 
-    await this.fieldService.deleteFields(fieldsIds);
-    this.collectionModel.updateOne(
-      { _id: collectionId },
-      {
-        $pull: {
-          fields: {
-            $in: {
-              fieldsIds,
+    await Promise.all([
+      this.fieldService.deleteFields(fieldsIds),
+      this.collectionModel.updateOne(
+        { _id: collectionId },
+        {
+          $pull: {
+            fields: {
+              $in: fieldsIds,
             },
           },
         },
-      },
-    );
+      ),
+    ]);
   }
 
   async createFields(
