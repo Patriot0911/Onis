@@ -9,7 +9,7 @@ export class CollectionMapper {
     return {
       id: collection.id,
       title: collection.title,
-      participants: collection.participants as unknown as string[],
+      participants: collection.participants,
       status: collection.status,
       createdAt: collection.createdAt,
     };
