@@ -15,7 +15,6 @@
     "react-dom": "^18",
     "react-redux": "^9.1.2",
     "sass": "^1.79.4",
-    "shared": "*",
     "web": "file:"
   },
   "devDependencies": {

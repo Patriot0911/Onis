@@ -3,9 +3,11 @@ import { createSlice, } from '@reduxjs/toolkit';
 
 const initialState: IMeInitialState = {
     value: {
-        isAuth: false,
+        id: '',
+        avatar: '',
         userName: '',
-        email: '',
+        isAuth: false,
+        isLoading: true,
     },
 };
 
@@ -13,12 +15,14 @@ export const meSlice = createSlice({
     name: 'me',
     initialState,
     reducers: {
-        logIn: (state: any, { payload, type, }: IUserLoginPayload) => {
-            if(!payload.email || !payload.userName)
+        logIn: (state: any, { payload, }: IUserLoginPayload) => {
+            if(!payload.id || !payload.userName)
                 return;
             state.value.isAuth = true;
+            state.value.avatar = payload.avatar;
+            state.value.id = payload.id;
             state.value.userName = payload.userName;
-            state.value.email = payload.userName;
+            state.value.isLoading = false;
         },
         logOut: (state) => {
             state = initialState;

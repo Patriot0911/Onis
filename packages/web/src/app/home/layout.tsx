@@ -1,19 +1,21 @@
-import { ExtendedLayout } from '@/components/Layout';
 import { PropsWithChildren, } from 'react';
 import type { Metadata, } from 'next';
 
-import './styles/global.css';
+import Layout from '@/components/Layout';
 
 export const metadata: Metadata = {
-    title: 'Onis',
+    title: 'ONIS',
     description: '',
 };
 
 const RootLayout = ({ children, }: Readonly<PropsWithChildren>) => {
     return (
-        <ExtendedLayout>
+        <Layout
+            redirect={'NOT_LOGGED'}
+            path={'auth'}
+        >
             {children}
-        </ExtendedLayout>
+        </Layout>
     );
 };
 

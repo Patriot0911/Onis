@@ -5,12 +5,11 @@ import type { Metadata, } from 'next';
 import './styles/global.css';
 
 export const metadata: Metadata = {
-    title: 'Onis',
+    title: 'ONIS',
     description: '',
 };
 
 const RootLayout = ({ children, }: Readonly<PropsWithChildren>) => {
-    // add redux wrapepr
     return (
         <html lang={'en'}>
             <body

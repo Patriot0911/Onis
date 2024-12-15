@@ -1,19 +1,28 @@
 'use client';
 
+import { usePathname, useRouter, useSearchParams, } from 'next/navigation';
 import EmailOrNicknameInput from './Partial/EmailOrNicknameInput';
-import PasswordInput from './Partial/PasswordInput';
+import { logIn, } from '@/redux/features/me/meSlice';
 import NicknameInput from './Partial/NicknameInput';
+import PasswordInput from './Partial/PasswordInput';
 import AuthClientService from '@/services/auth';
 import { useEffect, useState, } from 'react';
+import { useDispatch, } from 'react-redux';
 
 const AuthForm = () => {
-    const [isLogin, setIsLogin] = useState(false);
+    const { push, } = useRouter();
+    const dispatch = useDispatch();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
     const [isDisabled, setIsDisabled] = useState(true);
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const [username, setUsername] = useState('');
     const [emailOrNickname, setEmailOrNickname] = useState('');
     const [password, setPassword] = useState('');
+
+    const isLogin = searchParams.get('login') == 'true';
 
     useEffect(() => {
         setIsDisabled(
@@ -25,7 +34,9 @@ const AuthForm = () => {
     }, [isLogin, username, emailOrNickname, password]);
 
     const toggleForm = () => {
-        setIsLogin(!isLogin);
+        const params = new URLSearchParams(searchParams.toString())
+        params.set('login', `${!isLogin}`);
+        push(pathname + '?' + params);
         setUsername('');
         setEmailOrNickname('');
         setPassword('');
@@ -37,21 +48,18 @@ const AuthForm = () => {
 
         if (isDisabled) {
             return;
-        }
-
+        };
         try {
-            if (isLogin) {
-                console.log('Logging in with:', { emailOrNickname, password });
-                const response = await AuthClientService.login(emailOrNickname, password);
-                console.log('Logged in:', response);
-            } else {
-                console.log('Registering with:', { username, emailOrNickname, password });
-                const response = await AuthClientService.registerUser(username, emailOrNickname, password);
-                console.log('Registered:', response);
-            }
+            const response = await (isLogin ?
+                AuthClientService.login(emailOrNickname, password) : AuthClientService.registerUser(username, emailOrNickname, password)
+            );
+            if(!response)
+                return;
+            const { id, userName, avatar, } = response;
+            dispatch(logIn({ avatar, id, userName, }))
         } catch (error) {
-            console.error('Failed to register:', error);
-        }
+            // error to Toaster
+        };
     };
 
     return (

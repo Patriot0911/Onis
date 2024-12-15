@@ -1,8 +1,6 @@
-import { BasicLayout } from '@/components/Layout';
 import { PropsWithChildren, } from 'react';
+import Layout from '@/components/Layout';
 import type { Metadata, } from 'next';
-
-import '../styles/global.css';
 
 export const metadata: Metadata = {
     title: 'ONIS | Authorization',
@@ -11,9 +9,12 @@ export const metadata: Metadata = {
 
 const AuthLayout = ({ children, }: Readonly<PropsWithChildren>) => {
     return (
-        <BasicLayout redirectOnLogged>
+        <Layout
+            redirect={'LOGGED'}
+            path={'/home'}
+        >
             {children}
-        </BasicLayout>
+        </Layout>
     );
 };
 

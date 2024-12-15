@@ -3,7 +3,7 @@ const nextConfig = {
     redirects: () => [
         {
             source: '/',
-            destination: '/welcome',
+            destination: '/home',
             permanent: true,
         },
     ],

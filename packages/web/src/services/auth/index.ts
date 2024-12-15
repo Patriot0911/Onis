@@ -1,6 +1,10 @@
 
 class AuthClientService {
   static API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  static authProprs: any = {
+    headers: { 'Content-Type': 'application/json', },
+    credentials: 'include',
+  };
 
   static AuthRoutes = {
     login: `${this.API_URL}/auth/login`,
@@ -9,16 +13,14 @@ class AuthClientService {
   };
 
   static async registerUser(username: string, email: string, password: string) {
+    console.log('Registering with:', { username, email, password });
     if(!this.API_URL)
       throw new Error('No API found');
 
     const body = JSON.stringify({ username, email, password, });
     const res = await fetch(this.AuthRoutes.register, {
-      credentials: 'include',
+      ...this.authProprs,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body,
     });
 
@@ -31,13 +33,14 @@ class AuthClientService {
   };
 
   static async login(emailOrUserName: string, password: string) {
+    console.log('Logging in with:', { emailOrUserName, password });
+    if(!this.API_URL)
+      throw new Error('No API found');
+    console.log({'w': 'w'})
     const body = JSON.stringify({ emailOrUserName, password, });
     const res = await fetch(this.AuthRoutes.login, {
-      credentials: 'include',
+      ...this.authProprs,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body,
     });
 
@@ -45,25 +48,24 @@ class AuthClientService {
       const errorMessage = await res.text();
       throw new Error(`Failed to login: ${errorMessage}`);
     };
-
+    console.log(await res.json())
     return res.json();
   };
 
   static async me() {
-    const res = await fetch(this.AuthRoutes.me, {
-      credentials: 'include',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!res.ok) {
-      const errorMessage = await res.text();
-      throw new Error(`Failed to login: ${errorMessage}`);
-    };
-
-    return res.json();
+    if(!this.API_URL)
+      throw new Error('No API found');
+    try {
+      const res = await fetch(this.AuthRoutes.me, {
+        ...this.authProprs,
+        method: 'GET',
+      });
+      if (!res.ok) {
+        const errorMessage = await res.text();
+        throw new Error(`Failed to login: ${errorMessage}`);
+      };
+      return res.json();
+    } catch(e) {};
   };
 };
 

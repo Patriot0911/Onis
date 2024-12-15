@@ -36,7 +36,7 @@ const PasswordInput = ({ value, onChange, hasSubmitted }: PasswordInputProps) =>
                     onChange={(e) => onChange(e.target.value)}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                    {isPasswordVisible ? (
+                    {!isPasswordVisible ? (
                         <FaEyeSlash
                             className="h-6 w-6 text-blue-600 cursor-pointer"
                             onClick={togglePasswordVisibility}
