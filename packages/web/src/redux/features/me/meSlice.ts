@@ -15,17 +15,21 @@ export const meSlice = createSlice({
     name: 'me',
     initialState,
     reducers: {
-        logIn: (state: any, { payload, }: IUserLoginPayload) => {
+        logIn: (_: any, { payload, }: IUserLoginPayload) => {
             if(!payload.id || !payload.userName)
                 return;
-            state.value.isAuth = true;
-            state.value.avatar = payload.avatar;
-            state.value.id = payload.id;
-            state.value.userName = payload.userName;
-            state.value.isLoading = false;
+            return {
+                value: {
+                    isAuth: true,
+                    id: payload.id,
+                    isLoading: false,
+                    avatar: payload.avatar,
+                    userName: payload.userName,
+                }
+            };
         },
-        logOut: (state) => {
-            state = initialState;
+        logOut: (_) => {
+            return initialState;
         },
     },
 });

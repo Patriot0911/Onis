@@ -12,6 +12,7 @@ const AuthLayout = ({ children, }: Readonly<PropsWithChildren>) => {
         <Layout
             redirect={'LOGGED'}
             path={'/home'}
+            bgClr={'primary'}
         >
             {children}
         </Layout>

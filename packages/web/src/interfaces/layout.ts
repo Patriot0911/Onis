@@ -16,5 +16,7 @@ export declare namespace ILayout {
         path?: string;
     }
 
-    export interface IProps extends PropsWithChildren, IHeaderProps {}
+    export interface IProps extends PropsWithChildren, IHeaderProps {
+        bgClr?: string;
+    }
 };

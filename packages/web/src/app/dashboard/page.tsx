@@ -1,9 +1,9 @@
-const HomePage = () => {
+const MyCollectionsPage = () => {
     return (
         <div className="flex justify-center items-center">
-            home
+            My collections
         </div>
     );
 };
 
-export default HomePage;
+export default MyCollectionsPage;
