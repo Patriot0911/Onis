@@ -7,6 +7,7 @@ import { UserService } from './UserService';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import * as bcrypt from 'bcrypt';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -16,12 +17,8 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async getMe(user: User): Promise<User> {
-    return this.userService.findById(user.id);
-  }
-
-  async login(res: Response, { emailOrUserName, password }: AuthUserDTO): Promise<void> {
-    const user = await this.userService.findByLoginOrEmail(emailOrUserName);
+  async login(res: Response, { email, password }: AuthUserDTO): Promise<User> {
+    const user = await this.userService.findByEmail(email);
     if (!user) {
       throw new BadRequestException('User with this username does not exists');
     }
@@ -30,24 +27,42 @@ export class AuthService {
       throw new BadRequestException('Passwords dont match');
     }
 
-    const payload = { sub: user.id, username: user.username };
-    res.cookie('userToken', this.jwtService.sign(payload), {
+    const token = this.generateToken(user.id, user.username);
+    console.log(token);
+    res.cookie('userToken', token, {
       expires: new Date(
         Date.now() + this.configService.get<number>('JWT_EXPIRES') * 1000,
       ),
     });
+    return user;
+  }
+
+  generateToken(userId: Types.ObjectId, username: string) {
+    const payload = { sub: userId, username };
+    return this.jwtService.sign(payload);
   }
 
   async logout(res: Response): Promise<void> {
     res.clearCookie('userToken');
   }
 
-  async register({ username, email, password }: CreateUserDTO): Promise<User> {
+  async register(
+    res: Response,
+    { username, email, password }: CreateUserDTO,
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
-    return this.userService.create({
+    const user = await this.userService.create({
       username,
       email,
       password: hashedPassword,
     });
+
+    const token = this.generateToken(user.id, user.username);
+    res.cookie('userToken', token, {
+      expires: new Date(
+        Date.now() + this.configService.get<number>('JWT_EXPIRES') * 1000,
+      ),
+    });
+    return user;
   }
 }

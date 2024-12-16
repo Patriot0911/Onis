@@ -15,8 +15,7 @@ export class AuthController {
 
   @Access()
   @Get('me')
-  async getMe(@UserRequest() userReq: User): Promise<UserResponse> {
-    const user = await this.authService.getMe(userReq);
+  async getMe(@UserRequest() user: User): Promise<UserResponse> {
     return UserMapper.getUserResponse(user);
   }
 
@@ -24,8 +23,9 @@ export class AuthController {
   async login(
     @Res({ passthrough: true }) res: Response,
     @Body() body: AuthUserDTO,
-  ): Promise<void> {
-    return this.authService.login(res, body);
+  ): Promise<UserResponse> {
+    const user = await this.authService.login(res, body);
+    return UserMapper.getUserResponse(user);
   }
 
   @Post('logout')
@@ -34,8 +34,11 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() body: CreateUserDTO): Promise<UserResponse> {
-    const user = await this.authService.register(body);
+  async register(
+    @Res({ passthrough: true }) res: Response,
+    @Body() body: CreateUserDTO,
+  ): Promise<UserResponse> {
+    const user = await this.authService.register(res, body);
     return UserMapper.getUserResponse(user);
   }
 }

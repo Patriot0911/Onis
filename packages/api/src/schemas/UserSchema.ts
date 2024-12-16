@@ -5,13 +5,13 @@ import { Types, Document } from 'mongoose';
 export class User extends Document {
   @Prop({
     required: true,
-    unique: true,
+    unique: false,
   })
   username: string;
 
   @Prop({
-    required: true,
     unique: true,
+    required: true,
   })
   email: string;
 
@@ -40,4 +40,7 @@ export class User extends Document {
   savedCollections: Types.ObjectId[];
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User).index(
+  { email: 1 },
+  { unique: true },
+);

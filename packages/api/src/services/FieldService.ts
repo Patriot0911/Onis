@@ -26,8 +26,4 @@ export class FieldService {
   async createFields(fields: FieldDTO[]) {
     return this.fieldModel.insertMany(fields);
   }
-
-  async isExist(id: Types.ObjectId) {
-    return this.fieldModel.exists({ _id: id });
-  }
 }

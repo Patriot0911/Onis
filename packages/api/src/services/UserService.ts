@@ -17,14 +17,10 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
-  async findByLoginOrEmail(emailOrUserName: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({
-      $or: [{ username: emailOrUserName }, { email: emailOrUserName }],
+      email,
     });
-  }
-
-  async findByLogin(username: string): Promise<User> {
-    return this.userModel.findOne({ username }).exec();
   }
 
   async toggleCollection(id: Types.ObjectId, collectionId: Types.ObjectId) {
