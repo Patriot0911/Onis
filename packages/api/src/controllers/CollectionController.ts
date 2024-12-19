@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { CollectionService } from '../services/CollectionService';
 import { UserRequest } from '../utils/security/UserRequest';
-import { User } from '../schemas/UserSchema';
 import { Access } from '../utils/security/Access';
 import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
 import { CollectionMapper } from '../mappers/CollectionMapper';
@@ -13,6 +12,9 @@ import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
 import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
 import { Types } from 'mongoose';
 import { ChangeFieldsDTO } from 'src/dtos/ChangeFieldsDTO';
+import { UserData } from 'src/data/UserData';
+import { FieldMapper } from 'src/mappers/FieldMapper';
+import { FieldResponse } from 'src/responses/FieldsResponse';
 
 @Controller('collections')
 export class CollectionController {
@@ -22,9 +24,9 @@ export class CollectionController {
   @Post()
   async create(
     @Body() body: CreateCollectionDTO,
-    @UserRequest() user: User,
+    @UserRequest() user: UserData,
   ): Promise<CollectionResponse> {
-    const collection = await this.collectionService.create(body, user.id);
+    const collection = await this.collectionService.create(body, user._id);
     return CollectionMapper.getCollectionResponse(collection);
   }
 
@@ -57,7 +59,20 @@ export class CollectionController {
   async ChangeFields(
     @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
     @Body() body: ChangeFieldsDTO,
-  ): Promise<void> {
-    return this.collectionService.changeFields(collectionId, body);
+  ): Promise<FieldResponse[]> {
+    await this.collectionService.changeFields(collectionId, body);
+    const fields =
+      await this.collectionService.getCollectionFields(collectionId);
+    return FieldMapper.getFields(fields);
+  }
+
+  @Access('collections.$collectionId.fields.get')
+  @Get(':collectionId/fields')
+  async getFields(
+    @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
+  ): Promise<FieldResponse[]> {
+    const fields =
+      await this.collectionService.getCollectionFields(collectionId);
+    return FieldMapper.getFields(fields);
   }
 }

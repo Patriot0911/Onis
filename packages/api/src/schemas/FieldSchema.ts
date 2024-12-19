@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export enum Type {
   NUMBER = 'number',
@@ -31,6 +31,9 @@ export class Field extends Document {
     default: false,
   })
   isArray: boolean;
+
+  @Prop({ type: Types.ObjectId, ref: 'Collection', required: true })
+  collect: Types.ObjectId;
 }
 
 export const FieldSchema = SchemaFactory.createForClass(Field);

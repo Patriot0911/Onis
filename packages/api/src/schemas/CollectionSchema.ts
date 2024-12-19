@@ -28,7 +28,7 @@ export class Collection extends Document {
   image: string;
 
   @Prop({ type: [Types.ObjectId], ref: 'User' })
-  participants: Participant[];
+  participants: Types.ObjectId[];
 
   @Prop({
     enum: Status,
@@ -46,7 +46,7 @@ export class Collection extends Document {
     ref: 'Field',
     default: [],
   })
-  fields: Field[];
+  fields: Types.ObjectId[];
 }
 
 export const CollectionSchema = SchemaFactory.createForClass(Collection);

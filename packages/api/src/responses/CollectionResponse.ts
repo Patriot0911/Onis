@@ -1,10 +1,9 @@
+import { Types } from 'mongoose';
 import { Status } from '../schemas/CollectionSchema';
-import { Participant } from '../schemas/ParticipantSchema';
 
 export class CollectionResponse {
-  id: string;
+  id: Types.ObjectId;
   title: string;
-  participants: Participant[];
   status: Status;
   createdAt: Date;
 }

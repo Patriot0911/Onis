@@ -28,7 +28,6 @@ export class AuthService {
     }
 
     const token = this.generateToken(user.id, user.username);
-    console.log(token);
     res.cookie('userToken', token, {
       expires: new Date(
         Date.now() + this.configService.get<number>('JWT_EXPIRES') * 1000,
