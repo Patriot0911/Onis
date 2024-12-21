@@ -14,7 +14,7 @@ import Nav from './Nav';
 
 import styles from '../../styles.module.scss';
 
-const Header = ({ redirect, path, }: ILayout.IHeaderProps) => {
+const Header = ({ redirect, path, hideNav, }: ILayout.IHeaderProps) => {
     const { push, } = useRouter();
     const dispatch = useDispatch();
     const { isAuth, isLoading, } = useAppSelector(({ me }, ) => me.value);
@@ -23,13 +23,6 @@ const Header = ({ redirect, path, }: ILayout.IHeaderProps) => {
             return push(path ?? '/');
         if(redirect === 'NOT_LOGGED' && !isLogged)
             return push(path ?? '/');
-    };
-    const isAuthByStorage = () => {
-        const rawItem = localStorage.getItem('authState');
-        if(!rawItem)
-            return false;
-        const item = JSON.parse(rawItem);
-        return item.isAuth;
     };
     useEffect(
         () => {
@@ -61,7 +54,7 @@ const Header = ({ redirect, path, }: ILayout.IHeaderProps) => {
         }, [isAuth]
     );
     return (
-        (isAuth || isAuthByStorage()) && (
+        (isAuth && !hideNav) && (
             <header>
                 <div
                     className={styles['heading-block']}

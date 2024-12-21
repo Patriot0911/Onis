@@ -13,6 +13,7 @@ const RootLayout = ({ children, }: Readonly<PropsWithChildren>) => {
         <Layout
             redirect={'NOT_LOGGED'}
             path={'auth'}
+            bgClr={'secondary'}
         >
             {children}
         </Layout>

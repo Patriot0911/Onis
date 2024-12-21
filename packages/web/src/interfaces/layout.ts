@@ -13,6 +13,7 @@ export declare namespace ILayout {
 
     export interface IHeaderProps {
         redirect: TRedirectOptions;
+        hideNav?: boolean;
         path?: string;
     }
 
