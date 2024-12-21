@@ -6,31 +6,48 @@ import AuthClientService from '@/services/auth';
 import { ILayout, } from '@/interfaces/layout';
 import { useRouter, } from 'next/navigation';
 import { useDispatch, } from 'react-redux';
-import { IoMdExit } from 'react-icons/io';
-import { useEffect, useRef, } from 'react';
+import LogOutButton from './LogOutButton';
+import { useEffect, } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Nav from './Nav';
 
 import styles from '../../styles.module.scss';
-import Nav from './Nav';
 
 const Header = ({ redirect, path, }: ILayout.IHeaderProps) => {
     const { push, } = useRouter();
     const dispatch = useDispatch();
-    const { value: { isAuth, isLoading, ...value }, } = useAppSelector(({ me }, ) => me);
+    const { isAuth, isLoading, } = useAppSelector(({ me }, ) => me.value);
     const redirectOnCondition = (isLogged: boolean) => {
         if(redirect === 'LOGGED' && isLogged)
             return push(path ?? '/');
         if(redirect === 'NOT_LOGGED' && !isLogged)
             return push(path ?? '/');
     };
+    const isAuthByStorage = () => {
+        const rawItem = localStorage.getItem('authState');
+        if(!rawItem)
+            return false;
+        const item = JSON.parse(rawItem);
+        return item.isAuth;
+    };
     useEffect(
         () => {
             (async function() {
+                const authState = AuthClientService.validateAuthStorage();
+                if(authState) {
+                    const { avatar, username, isAuth, } = authState;
+                    redirectOnCondition(isAuth);
+                    if(isAuth)
+                        dispatch(logIn({ avatar,  username, }));
+                    return;
+                };
                 const res = await AuthClientService.me();
                 if(res) {
-                    const { id, username: userName, avatar, } = res;
-                    dispatch(logIn({ avatar, id, userName, }));
+                    const { username, avatar, } = res;
+                    dispatch(logIn({ avatar,  username, }));
+                } else {
+                    AuthClientService.logoutStorage();
                 };
                 redirectOnCondition(!!res);
             })();
@@ -44,34 +61,31 @@ const Header = ({ redirect, path, }: ILayout.IHeaderProps) => {
         }, [isAuth]
     );
     return (
-        <header>
-            <div
-                className={styles['heading-block']}
-            >
-                <Link
-                    href={'home'}
-                    className={styles['link-wrapper']}
-                >
-                    <Image
-                        src={'/static/home-logo.svg'}
-                        alt={'home-logo'}
-                        width={30}
-                        height={30}
-                    /> <span>Onis</span>
-                </Link>
-            </div>
-            <Nav />
-            <div
-                className={styles['footer-block']}
-            >
+        (isAuth || isAuthByStorage()) && (
+            <header>
                 <div
-                    className={styles['exit-action-wrapper']}
+                    className={styles['heading-block']}
                 >
-                    <IoMdExit />
-                    <span> Вийти </span>
+                    <Link
+                        href={'home'}
+                        className={styles['link-wrapper']}
+                    >
+                        <Image
+                            src={'/static/home-logo.svg'}
+                            alt={'home-logo'}
+                            width={30}
+                            height={30}
+                        /> <span>Onis</span>
+                    </Link>
                 </div>
-            </div>
-        </header>
+                <Nav />
+                <div
+                    className={styles['footer-block']}
+                >
+                    <LogOutButton />
+                </div>
+            </header>
+        )
     );
 };
 
