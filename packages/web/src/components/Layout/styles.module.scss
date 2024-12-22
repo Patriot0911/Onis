@@ -5,11 +5,13 @@
     width: 100%;
     header {
         display: flex;
-        position: relative;
+        position: sticky;
         overflow: hidden;
+        top: 0;
         flex-direction: column;
         justify-content: space-between;
-        width: 18rem;
+        height: 100dvh;
+        width: 270px;
         background-color: var(--color-bg-primary);
         border-top-right-radius: 0.6rem;
         border-bottom-right-radius: 0.6rem;

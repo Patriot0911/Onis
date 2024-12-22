@@ -1,5 +1,13 @@
+import InnerLayout from '@/components/InnerLayout';
+
 const ApiInfoPage = () => {
-    return <div className="flex justify-center items-center">API info</div>;
+    return (
+        <InnerLayout>
+            <div className="flex justify-center items-center">
+                API Info page
+            </div>
+        </InnerLayout>
+    )
 };
 
 export default ApiInfoPage;

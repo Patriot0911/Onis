@@ -1,5 +1,13 @@
+import InnerLayout from '@/components/InnerLayout';
+
 const CollectionsPage = () => {
-    return <div className="flex justify-center items-center">collections</div>;
-};
+    return (
+        <InnerLayout>
+            <div className="flex justify-center items-center">
+                Сollections
+            </div>
+        </InnerLayout>
+    )
+}
 
 export default CollectionsPage;

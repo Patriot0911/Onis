@@ -1,0 +1,38 @@
+.inner-header-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .path-container {
+        display: flex;
+        flex-direction: row;
+        gap: 0.2rem;
+        .path-item {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            height: 2.5rem;
+            color: var(--color-primary);
+            svg {
+                width: 1.7rem;
+                height: 1.7rem;
+            }
+            .path-name {
+                cursor: pointer;
+                line-height: 1.7rem;
+                font-size: 1.7rem;
+                transition: transform ease-in-out 0.2s;
+                &:hover {
+                    transform: translateX(3px);
+                }
+            }
+            .last {
+                padding-right: 0;
+                font-weight: 600;
+            }
+        }
+    }
+}
