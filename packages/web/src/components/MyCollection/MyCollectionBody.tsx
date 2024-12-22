@@ -1,6 +1,6 @@
-import { IoShareSocial } from "react-icons/io5";
-import { MdLink } from "react-icons/md";
-import CollectionButtonWrapper from "./CollectionButton";
+import { IoShareSocial } from 'react-icons/io5';
+import { MdLink } from 'react-icons/md';
+import CollectionButtonWrapper from './CollectionButton';
 
 const MyCollectionBody = () => {
     return (
