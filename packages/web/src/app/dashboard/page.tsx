@@ -1,13 +1,13 @@
 import InnerLayout from '@/components/InnerLayout';
 
-const MyCollectionsPage = () => {
+const DashboardPage = () => {
     return (
         <InnerLayout>
             <div className="flex justify-center items-center">
-                My collections
+                Dashboard
             </div>
         </InnerLayout>
     );
 };
 
-export default MyCollectionsPage;
+export default DashboardPage;
