@@ -1,5 +1,5 @@
 import { IMeInitialState, IUserLoginPayload } from '@/interfaces/redux';
-import { createSlice, } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: IMeInitialState = {
     value: {
@@ -16,18 +16,20 @@ export const meSlice = createSlice({
     name: 'me',
     initialState,
     reducers: {
-        logIn: (_: any, { payload, }: IUserLoginPayload) => {
-            if(!payload.username)
-                return;
+        logIn: (_: unknown, { payload }: IUserLoginPayload) => {
+            if (!payload.username) return;
             const baseState = {
                 isAuth: true,
                 avatar: payload.avatar,
                 username: payload.username,
             };
-            localStorage.setItem("authState", JSON.stringify({
-                ...baseState,
-                expires: new Date().getTime() + parseInt(authDataRefresh),
-            }));
+            localStorage.setItem(
+                'authState',
+                JSON.stringify({
+                    ...baseState,
+                    expires: new Date().getTime() + parseInt(authDataRefresh),
+                }),
+            );
             return {
                 value: {
                     ...baseState,
@@ -35,11 +37,14 @@ export const meSlice = createSlice({
                 },
             };
         },
-        logOut: (_) => {
-            localStorage.setItem("authState", JSON.stringify({
-                isAuth: false,
-                expires: new Date().getTime() + parseInt(authDataRefresh),
-            }));
+        logOut: () => {
+            localStorage.setItem(
+                'authState',
+                JSON.stringify({
+                    isAuth: false,
+                    expires: new Date().getTime() + parseInt(authDataRefresh),
+                }),
+            );
             return {
                 value: {
                     ...initialState.value,
@@ -50,6 +55,5 @@ export const meSlice = createSlice({
     },
 });
 
-export const { logIn, logOut, } = meSlice.actions
-
+export const { logIn, logOut } = meSlice.actions;
 export default meSlice.reducer;

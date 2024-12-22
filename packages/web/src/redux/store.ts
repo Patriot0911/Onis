@@ -1,4 +1,4 @@
-import { configureStore, } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import meReducer from './features/me/meSlice';
 
 export const makeStore = () => {

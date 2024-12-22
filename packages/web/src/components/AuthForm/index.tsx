@@ -1,16 +1,16 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams, } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import EmailOrNicknameInput from './Partial/EmailOrNicknameInput';
-import { logIn, } from '@/redux/features/me/meSlice';
+import { logIn } from '@/redux/features/me/meSlice';
 import NicknameInput from './Partial/NicknameInput';
 import PasswordInput from './Partial/PasswordInput';
 import AuthClientService from '@/services/auth';
-import { useEffect, useState, } from 'react';
-import { useDispatch, } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 const AuthForm = () => {
-    const { push, } = useRouter();
+    const { push } = useRouter();
     const dispatch = useDispatch();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -26,15 +26,15 @@ const AuthForm = () => {
 
     useEffect(() => {
         setIsDisabled(
-            (!isLogin && username.trim() === '')
-            || email.trim() === ''
-            || password.trim() === ''
+            (!isLogin && username.trim() === '') ||
+                email.trim() === '' ||
+                password.trim() === '',
         );
         setHasSubmitted(false);
     }, [isLogin, username, email, password]);
 
     const toggleForm = () => {
-        const params = new URLSearchParams(searchParams.toString())
+        const params = new URLSearchParams(searchParams.toString());
         params.set('login', `${!isLogin}`);
         push(pathname + '?' + params);
         setUsername('');
@@ -48,17 +48,21 @@ const AuthForm = () => {
 
         if (isDisabled) {
             return;
-        };
+        }
         try {
-            const response = isLogin ?
-                await AuthClientService.login(email, password) : await AuthClientService.registerUser(username, email, password);
-            if(!response)
-                return;
-            const { username: uName, avatar, } = response;
-            dispatch(logIn({ avatar, username: uName, }))
+            const response = isLogin
+                ? await AuthClientService.login(email, password)
+                : await AuthClientService.registerUser(
+                    username,
+                    email,
+                    password,
+                );
+            if (!response) return;
+            const { username: uName, avatar } = response;
+            dispatch(logIn({ avatar, username: uName }));
         } catch (error) {
             // error to Toaster
-        };
+        }
     };
 
     return (
@@ -69,7 +73,7 @@ const AuthForm = () => {
             </h1>
             <div className="flex flex-col pt-4 w-[500px]">
                 {!isLogin && (
-                    <div className='flex flex-col'>
+                    <div className="flex flex-col">
                         <NicknameInput
                             value={username}
                             onChange={setUsername}
@@ -78,7 +82,7 @@ const AuthForm = () => {
                         />
                     </div>
                 )}
-                <div className='flex flex-col'>
+                <div className="flex flex-col">
                     <EmailOrNicknameInput
                         value={email}
                         onChange={setEmail}
@@ -86,7 +90,7 @@ const AuthForm = () => {
                         hasSubmitted={hasSubmitted}
                     />
                 </div>
-                <div className='flex flex-col'>
+                <div className="flex flex-col">
                     <PasswordInput
                         value={password}
                         onChange={setPassword}
@@ -96,16 +100,14 @@ const AuthForm = () => {
                 <button
                     onClick={handleSubmit}
                     className="bg-blue-600 rounded-md p-5 text-white mt-2 disabled:bg-gray-400"
-                    disabled={isDisabled}
-                >
+                    disabled={isDisabled}>
                     {isLogin ? 'Увійти' : 'Зареєструватися'}
                 </button>
                 <p className="text-center mt-16">
                     {isLogin ? 'Ще не маєте акаунту?' : 'Уже маєте акаунт?'}
                     <span
                         className="text-blue-600 ml-2 cursor-pointer"
-                        onClick={toggleForm}
-                    >
+                        onClick={toggleForm}>
                         {isLogin ? 'Зареєструватись' : 'Увійти'}
                     </span>
                 </p>

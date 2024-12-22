@@ -1,9 +1,9 @@
-import { PayloadAction, } from '@reduxjs/toolkit';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 export interface IUserLogIn {
     avatar: string;
     username: string;
-};
+}
 
 export type IUserLoginPayload = PayloadAction<IUserLogIn>;
 
@@ -14,4 +14,4 @@ export interface IMeInitialState {
         isLoading: boolean;
         avatar: string;
     };
-};
+}

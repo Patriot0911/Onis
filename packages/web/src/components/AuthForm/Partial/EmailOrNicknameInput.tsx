@@ -8,12 +8,21 @@ interface EmailOrNicknameInputProps {
     hasSubmitted: boolean;
 }
 
-const EmailOrNicknameInput = ({ value, onChange, isLogin, hasSubmitted }: EmailOrNicknameInputProps) => {
+const EmailOrNicknameInput = ({
+    value,
+    onChange,
+    isLogin,
+    hasSubmitted,
+}: EmailOrNicknameInputProps) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
         if (value.trim() === '') {
-            setError(isLogin ? 'Електронна пошта або нікнейм не можуть бути порожніми' : 'Електронна пошта не може бути порожньою');
+            setError(
+                isLogin
+                    ? 'Електронна пошта або нікнейм не можуть бути порожніми'
+                    : 'Електронна пошта не може бути порожньою',
+            );
         } else if (!isLogin && !validateEmail(value)) {
             setError('Введіть дійсну електронну пошту');
         } else {
@@ -25,14 +34,16 @@ const EmailOrNicknameInput = ({ value, onChange, isLogin, hasSubmitted }: EmailO
         <>
             <input
                 type="text"
-                placeholder={`Електронна пошта`}
+                placeholder={'Електронна пошта'}
                 className="p-5 border-blue-600 border-2 rounded-md"
                 value={value}
                 name={'email'}
                 onChange={(e) => onChange(e.target.value)}
             />
-            <div className='h-6 my-2'>
-                {error && hasSubmitted && <p className="text-red-500">{error}</p>}
+            <div className="h-6 my-2">
+                {error && hasSubmitted && (
+                    <p className="text-red-500">{error}</p>
+                )}
             </div>
         </>
     );

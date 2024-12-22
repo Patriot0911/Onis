@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 interface PasswordInputProps {
     value: string;
@@ -7,7 +7,11 @@ interface PasswordInputProps {
     hasSubmitted: boolean;
 }
 
-const PasswordInput = ({ value, onChange, hasSubmitted }: PasswordInputProps) => {
+const PasswordInput = ({
+    value,
+    onChange,
+    hasSubmitted,
+}: PasswordInputProps) => {
     const [error, setError] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -29,7 +33,7 @@ const PasswordInput = ({ value, onChange, hasSubmitted }: PasswordInputProps) =>
         <>
             <div className="relative w-full flex items-center">
                 <input
-                    type={isPasswordVisible ? "text" : "password"}
+                    type={isPasswordVisible ? 'text' : 'password'}
                     placeholder="Пароль"
                     className="p-5 pr-12 border-blue-600 border-2 rounded-md w-full"
                     value={value}
@@ -49,8 +53,10 @@ const PasswordInput = ({ value, onChange, hasSubmitted }: PasswordInputProps) =>
                     )}
                 </div>
             </div>
-            <div className='h-6 my-2'>
-                {error && hasSubmitted && <p className="text-red-500">{error}</p>}
+            <div className="h-6 my-2">
+                {error && hasSubmitted && (
+                    <p className="text-red-500">{error}</p>
+                )}
             </div>
         </>
     );

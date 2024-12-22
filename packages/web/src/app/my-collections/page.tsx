@@ -1,8 +1,6 @@
 const MyCollectionsPage = () => {
     return (
-        <div className="flex justify-center items-center">
-            My collections
-        </div>
+        <div className="flex justify-center items-center">My collections</div>
     );
 };
 

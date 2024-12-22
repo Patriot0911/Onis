@@ -1,4 +1,4 @@
-import { PropsWithChildren, } from 'react';
+import { PropsWithChildren } from 'react';
 
 export declare namespace ILayout {
     /*
@@ -8,7 +8,7 @@ export declare namespace ILayout {
      * if redirect = 'NOT_LOGGED'
      *      redirect user if he is not logged in
      *
-    **/
+     **/
     export type TRedirectOptions = 'NONE' | 'NOT_LOGGED' | 'LOGGED';
 
     export interface IHeaderProps {
@@ -22,4 +22,4 @@ export declare namespace ILayout {
     }
 
     export interface IProps extends IMainProps, IHeaderProps {}
-};
+}
