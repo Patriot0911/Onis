@@ -7,7 +7,7 @@ const ApiInfoPage = () => {
                 API Info page
             </div>
         </InnerLayout>
-    )
+    );
 };
 
 export default ApiInfoPage;

@@ -1,4 +1,5 @@
 'use client';
+import InnerHeader from '@/components/InnerHeader';
 import InnerLayout from '@/components/InnerLayout';
 import MyCollection from '@/components/MyCollection';
 import { usePathname } from 'next/navigation';
@@ -19,6 +20,7 @@ const MyCollectionsPage = () => {
     return (
         collectionId && (
             <InnerLayout>
+                <InnerHeader />
                 <MyCollection collectionId={collectionId} />
             </InnerLayout>
         )
