@@ -13,10 +13,13 @@ export declare namespace ILayout {
 
     export interface IHeaderProps {
         redirect: TRedirectOptions;
+        hideNav?: boolean;
         path?: string;
     }
 
-    export interface IProps extends PropsWithChildren, IHeaderProps {
-        bgClr?: string;
+    export interface IMainProps extends PropsWithChildren {
+        bgClr?: 'secondary' | 'primary';
     }
+
+    export interface IProps extends IMainProps, IHeaderProps {}
 };

@@ -23,7 +23,7 @@ export class FieldService {
     });
   }
 
-  async createFields(fields: FieldDTO[]) {
+  async createFields(fields) {
     return this.fieldModel.insertMany(fields);
   }
 }

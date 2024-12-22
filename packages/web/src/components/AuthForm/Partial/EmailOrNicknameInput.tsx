@@ -25,9 +25,10 @@ const EmailOrNicknameInput = ({ value, onChange, isLogin, hasSubmitted }: EmailO
         <>
             <input
                 type="text"
-                placeholder={`Електронна пошта${isLogin ? ' або нікнейм' : ''}`}
+                placeholder={`Електронна пошта`}
                 className="p-5 border-blue-600 border-2 rounded-md"
                 value={value}
+                name={'email'}
                 onChange={(e) => onChange(e.target.value)}
             />
             <div className='h-6 my-2'>

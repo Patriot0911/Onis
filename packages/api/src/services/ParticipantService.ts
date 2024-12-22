@@ -17,7 +17,7 @@ export class ParticipantService {
     userId: Types.ObjectId,
     permission: string,
   ): Promise<boolean> {
-    const roles = await this.participantModel.find({});
+    const roles = await this.participantModel.find({ user: userId });
     return this.hasPermissionInRoles(roles, permission);
   }
 

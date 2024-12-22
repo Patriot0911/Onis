@@ -9,12 +9,15 @@ import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
 import { ChangeFieldsDTO, UpdateField } from 'src/dtos/ChangeFieldsDTO';
 import { FieldService } from './FieldService';
 import { FieldDTO } from 'src/dtos/FieldDTO';
+import { Field } from 'src/schemas/FieldSchema';
 
 @Injectable()
 export class CollectionService {
   constructor(
     @InjectModel(Collection.name)
     private readonly collectionModel: Model<Collection>,
+    @InjectModel(Field.name)
+    private readonly fieldModel: Model<Field>,
     @InjectModel(Participant.name)
     private readonly participantModel: Model<Participant>,
     private readonly fieldService: FieldService,
@@ -98,7 +101,11 @@ export class CollectionService {
     collectionId: Types.ObjectId,
     data: FieldDTO[],
   ): Promise<void> {
-    const fields = await this.fieldService.createFields(data);
+    const fieldsData = data.map((field) => ({
+      collect: collectionId,
+      ...field,
+    }));
+    const fields = await this.fieldService.createFields(fieldsData);
     await this.collectionModel.updateOne(
       { _id: collectionId },
       {
@@ -130,5 +137,11 @@ export class CollectionService {
         );
       }
     }
+  }
+
+  async getCollectionFields(collectionId: Types.ObjectId) {
+    return this.fieldModel.find({
+      collect: collectionId,
+    });
   }
 }

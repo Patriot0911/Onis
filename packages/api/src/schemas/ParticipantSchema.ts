@@ -10,10 +10,10 @@ export enum RoleName {
 
 @Schema()
 export class Participant extends Document {
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  user: User;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Collection' })
+  @Prop({ type: Types.ObjectId, ref: 'Collection', required: true })
   collect: Collection;
 
   @Prop({

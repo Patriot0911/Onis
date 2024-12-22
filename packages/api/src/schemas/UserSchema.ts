@@ -40,7 +40,4 @@ export class User extends Document {
   savedCollections: Types.ObjectId[];
 }
 
-export const UserSchema = SchemaFactory.createForClass(User).index(
-  { email: 1 },
-  { unique: true },
-);
+export const UserSchema = SchemaFactory.createForClass(User);

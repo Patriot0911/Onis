@@ -3,33 +3,49 @@ import { createSlice, } from '@reduxjs/toolkit';
 
 const initialState: IMeInitialState = {
     value: {
-        id: '',
         avatar: '',
-        userName: '',
+        username: '',
         isAuth: false,
         isLoading: true,
     },
 };
+
+const authDataRefresh = process.env.NEXT_PUBLIC_AUTH_REFRESH_REQ;
 
 export const meSlice = createSlice({
     name: 'me',
     initialState,
     reducers: {
         logIn: (_: any, { payload, }: IUserLoginPayload) => {
-            if(!payload.id || !payload.userName)
+            if(!payload.username)
                 return;
+            const baseState = {
+                isAuth: true,
+                avatar: payload.avatar,
+                username: payload.username,
+            };
+            localStorage.setItem("authState", JSON.stringify({
+                ...baseState,
+                expires: new Date().getTime() + parseInt(authDataRefresh),
+            }));
             return {
                 value: {
-                    isAuth: true,
-                    id: payload.id,
+                    ...baseState,
                     isLoading: false,
-                    avatar: payload.avatar,
-                    userName: payload.userName,
-                }
+                },
             };
         },
         logOut: (_) => {
-            return initialState;
+            localStorage.setItem("authState", JSON.stringify({
+                isAuth: false,
+                expires: new Date().getTime() + parseInt(authDataRefresh),
+            }));
+            return {
+                value: {
+                    ...initialState.value,
+                    isLoading: false,
+                },
+            };
         },
     },
 });

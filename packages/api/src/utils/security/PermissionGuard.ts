@@ -4,6 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { NoPermissionException } from '../exceptions/NoPermissionException';
 import { ParticipantService } from '../../services/ParticipantService';
 import { User } from '../../schemas/UserSchema';
+import { UserData } from 'src/data/UserData';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
@@ -16,11 +17,11 @@ export class PermissionGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     this.request = context.switchToHttp().getRequest<Request>();
-    const user: User = this.request.user as User;
+    const user = this.request.user as UserData;
     const permission = this.getPermission(context);
 
     const hasPermission = await this.roleService.hasPermission(
-      user.id,
+      user._id,
       permission,
     );
 

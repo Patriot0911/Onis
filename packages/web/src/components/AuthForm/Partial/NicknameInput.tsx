@@ -25,6 +25,7 @@ const NicknameInput = ({ value, onChange, isLogin, hasSubmitted }: NicknameInput
                 placeholder="Нікнейм"
                 className="p-5 border-blue-600 border-2 rounded-md"
                 value={value}
+                name={'username'}
                 onChange={(e) => onChange(e.target.value)}
             />
             <div className='h-6 my-2'>

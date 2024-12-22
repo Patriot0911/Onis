@@ -1,3 +1,6 @@
+import { IUserLogIn, } from '@/interfaces/redux';
+
+const authDataRefresh = process.env.NEXT_PUBLIC_AUTH_REFRESH_REQ;
 
 class AuthClientService {
   static API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -10,6 +13,41 @@ class AuthClientService {
     login: `${this.API_URL}/auth/login`,
     register: `${this.API_URL}/auth/register`,
     me: `${this.API_URL}/auth/me`,
+    logOut: `${this.API_URL}/auth/logout`,
+  };
+
+  static validateAuthStorage(): (IUserLogIn & { isAuth: boolean; } | undefined) {
+    const rawItem = localStorage.getItem('authState');
+    if(!rawItem)
+      return;
+    const item = JSON.parse(rawItem);
+    const { expires, } = item;
+    if(!expires)
+      return;
+    if(expires >= new Date().getTime())
+      return {
+        isAuth: item.isAuth,
+        avatar: item.avatar,
+        username: item.username,
+      };
+    localStorage.removeItem('authState');
+  };
+
+  static async logOut() {
+    if(!this.API_URL)
+      throw new Error('No API found');
+    const res = await fetch(this.AuthRoutes.logOut, {
+      ...this.authProprs,
+      method: 'POST',
+    });
+    return res.ok;
+  };
+
+  static async logoutStorage() {
+    localStorage.setItem('authState', JSON.stringify({
+      isAuth: false,
+      expires: new Date().getTime() + parseInt(authDataRefresh),
+    }));
   };
 
   static async registerUser(username: string, email: string, password: string) {
@@ -32,12 +70,11 @@ class AuthClientService {
     return res.json();
   };
 
-  static async login(emailOrUserName: string, password: string) {
-    console.log('Logging in with:', { emailOrUserName, password });
+  static async login(email: string, password: string) {
+    console.log('Logging in with:', { email, password });
     if(!this.API_URL)
       throw new Error('No API found');
-    console.log({'w': 'w'})
-    const body = JSON.stringify({ emailOrUserName, password, });
+    const body = JSON.stringify({ email, password, });
     const res = await fetch(this.AuthRoutes.login, {
       ...this.authProprs,
       method: 'POST',
@@ -48,7 +85,6 @@ class AuthClientService {
       const errorMessage = await res.text();
       throw new Error(`Failed to login: ${errorMessage}`);
     };
-    console.log(await res.json())
     return res.json();
   };
 

@@ -1,8 +1,12 @@
+import InnerLayout from '@/components/InnerLayout';
+
 const HomePage = () => {
     return (
-        <div className="flex justify-center items-center">
-            home
-        </div>
+        <InnerLayout>
+            <div className="flex justify-center items-center">
+                home
+            </div>
+        </InnerLayout>
     );
 };
 

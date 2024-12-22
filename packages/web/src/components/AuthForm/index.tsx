@@ -19,7 +19,7 @@ const AuthForm = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const [username, setUsername] = useState('');
-    const [emailOrNickname, setEmailOrNickname] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const isLogin = searchParams.get('login') == 'true';
@@ -27,18 +27,18 @@ const AuthForm = () => {
     useEffect(() => {
         setIsDisabled(
             (!isLogin && username.trim() === '')
-            || emailOrNickname.trim() === ''
+            || email.trim() === ''
             || password.trim() === ''
         );
         setHasSubmitted(false);
-    }, [isLogin, username, emailOrNickname, password]);
+    }, [isLogin, username, email, password]);
 
     const toggleForm = () => {
         const params = new URLSearchParams(searchParams.toString())
         params.set('login', `${!isLogin}`);
         push(pathname + '?' + params);
         setUsername('');
-        setEmailOrNickname('');
+        setEmail('');
         setPassword('');
     };
 
@@ -50,13 +50,12 @@ const AuthForm = () => {
             return;
         };
         try {
-            const response = await (isLogin ?
-                AuthClientService.login(emailOrNickname, password) : AuthClientService.registerUser(username, emailOrNickname, password)
-            );
+            const response = isLogin ?
+                await AuthClientService.login(email, password) : await AuthClientService.registerUser(username, email, password);
             if(!response)
                 return;
-            const { id, userName, avatar, } = response;
-            dispatch(logIn({ avatar, id, userName, }))
+            const { username: uName, avatar, } = response;
+            dispatch(logIn({ avatar, username: uName, }))
         } catch (error) {
             // error to Toaster
         };
@@ -81,8 +80,8 @@ const AuthForm = () => {
                 )}
                 <div className='flex flex-col'>
                     <EmailOrNicknameInput
-                        value={emailOrNickname}
-                        onChange={setEmailOrNickname}
+                        value={email}
+                        onChange={setEmail}
                         isLogin={isLogin}
                         hasSubmitted={hasSubmitted}
                     />
