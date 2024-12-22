@@ -5,6 +5,9 @@ const MyCollectionsPage = () => {
     return (
         <InnerLayout>
             <MyCollections />
+            <div className="flex justify-center items-center">
+                My collections
+            </div>
         </InnerLayout>
     );
 };

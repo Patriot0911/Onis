@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
 import type { Metadata } from 'next';
+import { PropsWithChildren } from 'react';
 
 import Layout from '@/components/Layout';
 
