@@ -9,7 +9,7 @@ on:
       - '**'
 
 jobs:
-  test:
+  lint_back:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -23,8 +23,22 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Frontend linter
-        run: npm run web:lint
-
       - name: Run Backend linter
         run: npm run api:lint
+
+  lint_front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend linter
+        run: npm run web:lint
