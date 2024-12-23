@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsEnum,
   IsNotEmpty,
@@ -23,4 +24,12 @@ export class FieldDTO {
   @IsOptional()
   @IsBoolean()
   isArray?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isRequired?: boolean;
+
+  @IsOptional()
+  @IsArray()
+  options: string[] | number[] | boolean[] | Date[];
 }

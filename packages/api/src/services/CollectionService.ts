@@ -10,6 +10,17 @@ import { ChangeFieldsDTO, UpdateField } from 'src/dtos/ChangeFieldsDTO';
 import { FieldService } from './FieldService';
 import { FieldDTO } from 'src/dtos/FieldDTO';
 import { Field } from 'src/schemas/FieldSchema';
+import { CreateResponseDTO } from 'src/dtos/CreateResponseDTO';
+import { Response } from 'src/schemas/ResponseSchema';
+import { Answer } from 'src/schemas/AnswerSchema';
+import { AnswerDTO } from 'src/dtos/ResponseDTO';
+
+const Protorypes = {
+  number: Number.prototype,
+  string: String.prototype,
+  date: Date.prototype,
+  boolean: Boolean.prototype,
+};
 
 @Injectable()
 export class CollectionService {
@@ -20,6 +31,10 @@ export class CollectionService {
     private readonly fieldModel: Model<Field>,
     @InjectModel(Participant.name)
     private readonly participantModel: Model<Participant>,
+    @InjectModel(Response.name)
+    private readonly responseModel: Model<Response>,
+    @InjectModel(Answer.name)
+    private readonly answerModel: Model<Answer>,
     private readonly fieldService: FieldService,
   ) {}
 
@@ -33,7 +48,7 @@ export class CollectionService {
       user: userId,
       collect: collection._id,
       roleName: RoleName.OWNER,
-      grants: [Grants.all(collection.id)],
+      grants: [Grants.all(collection._id)],
     });
 
     await participant.save();
@@ -66,8 +81,10 @@ export class CollectionService {
 
   async updateFields(collectionId: Types.ObjectId, data: UpdateField[]) {
     const fieldsIds = data.map((field) => field.id);
+    const fields = data.map((field) => field.data);
+    this.validateFieldOptions(fields);
     await Promise.all([
-      this.validateFields(collectionId, fieldsIds),
+      this.checkIsFieldsBelongsToCollection(collectionId, fieldsIds),
       this.fieldService.updateFields(data),
     ]);
   }
@@ -76,7 +93,7 @@ export class CollectionService {
     collectionId: Types.ObjectId,
     fieldsIds: Types.ObjectId[],
   ): Promise<void> {
-    await this.validateFields(collectionId, fieldsIds);
+    await this.checkIsFieldsBelongsToCollection(collectionId, fieldsIds);
 
     await Promise.all([
       this.fieldService.deleteFields(fieldsIds),
@@ -97,6 +114,7 @@ export class CollectionService {
     collectionId: Types.ObjectId,
     data: FieldDTO[],
   ): Promise<void> {
+    this.validateFieldOptions(data);
     const fieldsData = data.map((field) => ({
       collect: collectionId,
       ...field,
@@ -114,11 +132,11 @@ export class CollectionService {
     );
   }
 
-  async validateFields(
+  async checkIsFieldsBelongsToCollection(
     collectionId: Types.ObjectId,
     fieldsIds: Types.ObjectId[],
   ) {
-    const { fields: collectionFieldsIds }: { fields: Types.ObjectId[] } =
+    const { fields: collectionFieldsIds } =
       await this.collectionModel.findById(collectionId);
 
     for (const fieldId of fieldsIds) {
@@ -129,7 +147,7 @@ export class CollectionService {
 
       if (!isFieldBelongToCollection) {
         throw new BadRequestException(
-          `Field ${fieldId} does not in collection ${collectionId}}`,
+          `Field ${fieldId} does not in collection ${collectionId}`,
         );
       }
     }
@@ -139,5 +157,97 @@ export class CollectionService {
     return this.fieldModel.find({
       collect: collectionId,
     });
+  }
+
+  private validateFieldOptions(fields: FieldDTO[]) {
+    fields.forEach((field) => {
+      if (!field.options) return;
+
+      const isOptionsValid = field.options.every(
+        (option) => typeof option === field.type,
+      );
+      if (!isOptionsValid)
+        throw new BadRequestException(`All options should be ${field.type}`);
+    });
+  }
+
+  async fillCollection(
+    userId: Types.ObjectId,
+    collectionId: Types.ObjectId,
+    { answers }: CreateResponseDTO,
+  ) {
+    this.validateAnswers(collectionId, answers);
+    await this.saveResponse(userId, collectionId, answers);
+  }
+
+  async saveResponse(
+    userId: Types.ObjectId,
+    collectionId: Types.ObjectId,
+    answers: AnswerDTO[],
+  ) {
+    const response = new this.responseModel({
+      user: userId,
+      collect: collectionId,
+    });
+
+    for (const data of answers) {
+      const answer = new this.answerModel({
+        ...data,
+        response: response._id,
+      });
+
+      await answer.save();
+
+      response.answers.push(answer.id);
+    }
+
+    await response.save();
+  }
+
+  async validateAnswers(collectionId: Types.ObjectId, answers: AnswerDTO[]) {
+    const { fields } = await this.collectionModel
+      .findById(collectionId)
+      .populate<{ fields: Field[] }>({
+        path: 'fields',
+      });
+
+    const usedAnswers = [];
+
+    if (answers.length > fields.length)
+      throw new BadRequestException('Answers more than fields');
+
+    for (const field of fields) {
+      const fieldAnswer = answers.find(
+        (answer) => answer.fieldId.toString() === field._id.toString(),
+      );
+      if (field.isRequired && !fieldAnswer)
+        throw new BadRequestException(`Field ${field.name} is required`);
+      if (!fieldAnswer) continue;
+      usedAnswers.push(fieldAnswer.fieldId);
+
+      field.isArray
+        ? this.validateAnswerArray(field, fieldAnswer)
+        : this.validateAnswer(field, fieldAnswer.value);
+    }
+
+    if (usedAnswers.length !== answers.length)
+      throw new BadRequestException('');
+  }
+
+  validateAnswer(field: Field, answer: any) {
+    if (Protorypes[field.type] !== answer.prototype)
+      throw new BadRequestException(
+        `Type for field ${field.name} should be a ${field.type}`,
+      );
+    if (field.options && !field.options.find((option) => option === answer))
+      throw new BadRequestException(
+        `Field ${field.name} should be in options ${field.options}`,
+      );
+  }
+
+  validateAnswerArray(field: Field, answer: AnswerDTO) {
+    if (!Array.isArray(answer.value))
+      throw new BadRequestException(`Field ${field.name} should be an array`);
+    answer.value.forEach((value) => this.validateAnswer(field, value));
   }
 }

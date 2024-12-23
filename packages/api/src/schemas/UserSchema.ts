@@ -38,6 +38,13 @@ export class User extends Document {
     default: [],
   })
   savedCollections: Types.ObjectId[];
+
+  @Prop({
+    type: [Types.ObjectId],
+    ref: 'Response',
+    default: [],
+  })
+  responses: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

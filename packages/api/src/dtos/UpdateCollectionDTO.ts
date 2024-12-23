@@ -1,5 +1,4 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { Status } from 'src/schemas/CollectionSchema';
 
 export class UpdateCollectionDTO {
   @IsOptional()
@@ -9,10 +8,6 @@ export class UpdateCollectionDTO {
   @IsOptional()
   @IsString()
   description?: string;
-
-  @IsOptional()
-  @IsEnum(Status)
-  status?: Status;
 
   @IsOptional()
   @IsString()

@@ -9,7 +9,6 @@ export class CollectionMapper {
     return {
       id: collection.id,
       title: collection.title,
-      status: collection.status,
       createdAt: collection.createdAt,
     };
   }
