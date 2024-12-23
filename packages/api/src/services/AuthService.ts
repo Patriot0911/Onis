@@ -20,7 +20,7 @@ export class AuthService {
   async login(res: Response, { email, password }: AuthUserDTO): Promise<User> {
     const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new BadRequestException('User with this username does not exists');
+      throw new BadRequestException('User with this email does not exists');
     }
 
     if (!(await bcrypt.compare(password, user.password))) {

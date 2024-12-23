@@ -3,7 +3,6 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { NoPermissionException } from '../exceptions/NoPermissionException';
 import { ParticipantService } from '../../services/ParticipantService';
-import { User } from '../../schemas/UserSchema';
 import { UserData } from 'src/data/UserData';
 
 @Injectable()

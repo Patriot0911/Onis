@@ -42,8 +42,11 @@ export class CollectionService {
     return collection.save();
   }
 
-  async getAll(): Promise<Collection[]> {
-    return this.collectionModel.find();
+  async getAllByUserId(userId: Types.ObjectId): Promise<Collection[]> {
+    return this.collectionModel.find({}).populate({
+      path: 'participants',
+      match: { user: userId },
+    });
   }
 
   async get(id: Types.ObjectId): Promise<Collection> {

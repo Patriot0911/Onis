@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Participant } from './ParticipantSchema';
 import { Types, Document } from 'mongoose';
-import { Field } from './FieldSchema';
 
 export enum Status {
   ACTIVE = 'ACTIVE',
@@ -27,7 +25,7 @@ export class Collection extends Document {
   })
   image: string;
 
-  @Prop({ type: [Types.ObjectId], ref: 'User' })
+  @Prop({ type: [Types.ObjectId], ref: 'Participant' })
   participants: Types.ObjectId[];
 
   @Prop({

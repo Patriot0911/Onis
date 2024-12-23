@@ -4,10 +4,7 @@ import { UserRequest } from '../utils/security/UserRequest';
 import { Access } from '../utils/security/Access';
 import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
 import { CollectionMapper } from '../mappers/CollectionMapper';
-import {
-  CollectionResponse,
-  CollectionsResponse,
-} from '../responses/CollectionResponse';
+import { CollectionResponse } from '../responses/CollectionResponse';
 import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
 import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
 import { Types } from 'mongoose';
@@ -30,12 +27,7 @@ export class CollectionController {
     return CollectionMapper.getCollectionResponse(collection);
   }
 
-  @Get()
-  async getAll(): Promise<CollectionsResponse> {
-    const collections = await this.collectionService.getAll();
-    return CollectionMapper.getCollectionResponses(collections);
-  }
-
+  @Access('collections.$collectionId.get')
   @Get(':collectionId')
   async get(
     @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
