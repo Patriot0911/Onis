@@ -129,7 +129,7 @@ export class CollectionService {
 
       if (!isFieldBelongToCollection) {
         throw new BadRequestException(
-          `Field ${fieldId} does not in collection ${collectionId}}`,
+          `Field ${fieldId} does not in collection ${collectionId}`,
         );
       }
     }
