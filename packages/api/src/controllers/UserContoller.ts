@@ -7,15 +7,11 @@ import { UserRequest } from '../utils/security/UserRequest';
 import { User } from '../schemas/UserSchema';
 import { CollectionsResponse } from '../responses/CollectionResponse';
 import { CollectionMapper } from '../mappers/CollectionMapper';
-import { ParticipantService } from '../services/ParticipantService';
 import { UserData } from '../data/UserData';
 
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly participantService: ParticipantService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Access()
   @Post('collections/:collectionId/toggle')
@@ -31,9 +27,7 @@ export class UsersController {
   async getAllCollections(
     @UserRequest() user: UserData,
   ): Promise<CollectionsResponse> {
-    const collections = await this.participantService.getCollectionsByUserId(
-      user._id,
-    );
+    const collections = await this.userService.getCollectionsByUserId(user._id);
     return CollectionMapper.getCollectionResponses(collections);
   }
 }

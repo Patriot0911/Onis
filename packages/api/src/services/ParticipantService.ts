@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Participant } from '../schemas/ParticipantSchema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Collection } from '../schemas/CollectionSchema';
+import { ParticipantWithCollection } from '../data/ParticipantData';
 
 export const Grants = {
   all: (collectionId) => `collections.${collectionId}.*`,
@@ -58,13 +58,11 @@ export class ParticipantService {
     return true;
   }
 
-  async getCollectionsByUserId(userId: Types.ObjectId) {
-    const participants = (await this.participantModel
-      .find({ user: userId })
-      .populate({
-        path: 'collect',
-      })) as (Participant & { collect: Collection })[];
-
-    return participants.map((participant) => participant.collect);
+  async getParticipantsByUserId(
+    userId: Types.ObjectId,
+  ): Promise<ParticipantWithCollection[]> {
+    return (await this.participantModel.find({ user: userId }).populate({
+      path: 'collect',
+    })) as ParticipantWithCollection[];
   }
 }
