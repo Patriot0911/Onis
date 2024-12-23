@@ -42,13 +42,6 @@ export class CollectionService {
     return collection.save();
   }
 
-  async getAllByUserId(userId: Types.ObjectId): Promise<Collection[]> {
-    return this.collectionModel.find({}).populate({
-      path: 'participants',
-      match: { user: userId },
-    });
-  }
-
   async get(id: Types.ObjectId): Promise<Collection> {
     return this.collectionModel.findOne({ _id: id });
   }

@@ -7,13 +7,14 @@ import { UserRequest } from '../utils/security/UserRequest';
 import { User } from '../schemas/UserSchema';
 import { CollectionsResponse } from '../responses/CollectionResponse';
 import { CollectionMapper } from '../mappers/CollectionMapper';
-import { CollectionService } from '../services/CollectionService';
+import { ParticipantService } from '../services/ParticipantService';
+import { UserData } from '../data/UserData';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly userService: UserService,
-    private readonly collectionService: CollectionService,
+    private readonly participantService: ParticipantService,
   ) {}
 
   @Access()
@@ -26,11 +27,13 @@ export class UsersController {
   }
 
   @Access()
-  @Get('collections')
+  @Get('collections/me')
   async getAllCollections(
-    @UserRequest() user: User,
+    @UserRequest() user: UserData,
   ): Promise<CollectionsResponse> {
-    const collections = await this.collectionService.getAllByUserId(user.id);
+    const collections = await this.participantService.getCollectionsByUserId(
+      user._id,
+    );
     return CollectionMapper.getCollectionResponses(collections);
   }
 }
