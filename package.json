@@ -7,6 +7,7 @@
   "scripts": {
     "web:dev": "npx lerna run dev --scope=web",
     "web:lint": "npx lerna run lint --scope=web",
+    "api:lint": "npx lerna run lint --scope=web",
     "api:dev": "npx lerna run dev --scope=api"
   },
   "dependencies": {

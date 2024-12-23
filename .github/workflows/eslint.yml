@@ -25,3 +25,6 @@ jobs:
 
       - name: Run Frontend linter
         run: npm run web:lint
+
+      - name: Run Backend linter
+        run: npm run api:lint
