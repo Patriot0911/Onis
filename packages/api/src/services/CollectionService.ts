@@ -42,10 +42,6 @@ export class CollectionService {
     return collection.save();
   }
 
-  async getAll(): Promise<Collection[]> {
-    return this.collectionModel.find();
-  }
-
   async get(id: Types.ObjectId): Promise<Collection> {
     return this.collectionModel.findOne({ _id: id });
   }

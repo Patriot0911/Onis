@@ -3,10 +3,14 @@ import { User } from '../schemas/UserSchema';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { ParticipantService } from './ParticipantService';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly participantService: ParticipantService,
+  ) {}
 
   async create(data: CreateUserDTO): Promise<User> {
     const user = new this.userModel(data);
@@ -36,5 +40,12 @@ export class UserService {
       : { $addToSet: { savedCollections: collectionId } };
 
     return this.userModel.findByIdAndUpdate(id, updateOperation);
+  }
+
+  async getCollectionsByUserId(id: Types.ObjectId) {
+    const participants =
+      await this.participantService.getParticipantsByUserId(id);
+
+    return participants.map((participant) => participant.collect);
   }
 }

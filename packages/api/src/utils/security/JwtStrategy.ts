@@ -6,7 +6,6 @@ import { Request } from 'express';
 import { User } from '../../schemas/UserSchema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserMapper } from 'src/mappers/UserMapper';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

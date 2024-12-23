@@ -1,7 +1,5 @@
 import { Types, Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from './UserSchema';
-import { Collection } from './CollectionSchema';
 
 export enum RoleName {
   OWNER = 'OWNER',
@@ -14,7 +12,7 @@ export class Participant extends Document {
   user: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Collection', required: true })
-  collect: Collection;
+  collect: Types.ObjectId;
 
   @Prop({
     required: true,
