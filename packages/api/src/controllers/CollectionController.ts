@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch, Req } from '@nestjs/common';
 import { CollectionService } from '../services/CollectionService';
 import { UserRequest } from '../utils/security/UserRequest';
 import { Access } from '../utils/security/Access';
@@ -12,6 +12,7 @@ import { ChangeFieldsDTO } from 'src/dtos/ChangeFieldsDTO';
 import { UserData } from 'src/data/UserData';
 import { FieldMapper } from 'src/mappers/FieldMapper';
 import { FieldResponse } from 'src/responses/FieldsResponse';
+import { CreateResponseDTO } from 'src/dtos/CreateResponseDTO';
 
 @Controller('collections')
 export class CollectionController {
@@ -66,5 +67,15 @@ export class CollectionController {
     const fields =
       await this.collectionService.getCollectionFields(collectionId);
     return FieldMapper.getFields(fields);
+  }
+
+  @Access('collections.$collectionId.response.fill')
+  @Post(':collectionId/response')
+  async collectionResponse(
+    @UserRequest() user: UserData,
+    @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
+    @Body() body: CreateResponseDTO,
+  ) {
+    return this.collectionService.fillCollection(user._id, collectionId, body);
   }
 }

@@ -32,8 +32,17 @@ export class Field extends Document {
   })
   isArray: boolean;
 
+  @Prop({
+    required: false,
+    default: false,
+  })
+  isRequired: boolean;
+
   @Prop({ type: Types.ObjectId, ref: 'Collection', required: true })
   collect: Types.ObjectId;
+
+  @Prop({ type: Array, required: false, default: null })
+  options: string[] | number[] | boolean[] | Date[];
 }
 
 export const FieldSchema = SchemaFactory.createForClass(Field);
