@@ -79,7 +79,7 @@ jobs:
 
   docker_build:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/deployment'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
     name: Docker Image Build
     # needs: [lint_back, lint_front, tests_front, tests_back]
     steps:
@@ -112,7 +112,7 @@ jobs:
           tags: patriot25565/onis_back:latest
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/deployment'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
     name: Deployment
     needs: [docker_build]
     steps:
