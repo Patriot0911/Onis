@@ -60,7 +60,8 @@ const AuthForm = () => {
             if (!response) return;
             const { username: uName, avatar } = response;
             dispatch(logIn({ avatar, username: uName }));
-        } catch (error) {
+        } catch (error: unknown) {
+            console.log((error as Error).message);
             // error to Toaster
         }
     };
