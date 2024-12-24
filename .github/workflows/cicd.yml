@@ -43,45 +43,47 @@ jobs:
       - name: Run Backend linter
         run: npm run web:lint
 
-  # tests_back:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  testing_back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Install Node.js v.20
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '20'
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          working-directory: ./packages/api
 
-  #     - name: Install dependencies
-  #       run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  #     - name: Run Backend Tests
-  #       run: npm run web:test
+      - name: Run Backend Tests
+        run: npm run test
 
-  # tests_front:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
+  testing_front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-  #     - name: Install Node.js v.20
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '20'
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          working-directory: ./packages/web
 
-  #     - name: Install dependencies
-  #       run: npm install
+      - name: Install dependencies
+        run: npm install
 
-  #     - name: Run Frontend Tests
-  #       run: npm run web:test
+      - name: Run Backend Tests
+        run: npm run test
 
   docker_build:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
     name: Docker Image Build
-    # needs: [lint_back, lint_front, tests_front, tests_back]
+    needs: [lint_back, lint_front, testing_front, testing_back]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
