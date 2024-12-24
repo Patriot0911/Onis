@@ -99,6 +99,9 @@ jobs:
           file: ./packages/web/Dockerfile
           push: true
           tags: patriot25565/onis_front:latest
+          build-args: |
+            NEXT_PUBLIC_BACKEND_URL=${{ vars.NEXT_PUBLIC_BACKEND_URL }}
+            NEXT_PUBLIC_AUTH_REFRESH_REQ=${{ vars.NEXT_PUBLIC_AUTH_REFRESH_REQ }}
 
       - name: Build Docker image for Backend
         uses: docker/build-push-action@v6
@@ -120,4 +123,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /home/projects/;docker stop onis_api;docker stop onis_web;docker rm onis_api;docker rm onis_web;dcoker pull patriot25565/onis_front:latest;dcoker pull patriot25565/onis_back:latest;docker-compose up -d
+            cd /home/projects/;docker-compose down;docker pull patriot25565/onis_front:latest;docker pull patriot25565/onis_back:latest;docker-compose up -d
