@@ -3,16 +3,20 @@ import { CollectionService } from './CollectionService';
 import { getModelToken } from '@nestjs/mongoose';
 import { Collection } from '../schemas/CollectionSchema';
 import { Participant } from '../schemas/ParticipantSchema';
-import { FieldService } from './FieldService';
-import { BadRequestException } from '@nestjs/common';
-import { Types } from 'mongoose';
 import { Field } from '../schemas/FieldSchema';
+import { Response } from '../schemas/ResponseSchema';
+import { Answer } from '../schemas/AnswerSchema';
+import { FieldService } from './FieldService';
+import { Types } from 'mongoose';
+import { BadRequestException } from '@nestjs/common';
 
 describe('CollectionService', () => {
   let service: CollectionService;
   let collectionModel: any;
   let participantModel: any;
   let fieldModel: any;
+  let responseModel: any;
+  let answerModel: any;
   let fieldService: any;
 
   beforeEach(async () => {
@@ -39,6 +43,18 @@ describe('CollectionService', () => {
       findByIdAndUpdate: jest.fn().mockResolvedValue({}),
     };
 
+    responseModel = {
+      save: jest.fn().mockResolvedValue({}),
+      find: jest.fn().mockResolvedValue([]),
+      deleteMany: jest.fn().mockResolvedValue({}),
+    };
+
+    answerModel = {
+      save: jest.fn().mockResolvedValue({}),
+      find: jest.fn().mockResolvedValue([]),
+      deleteMany: jest.fn().mockResolvedValue({}),
+    };
+
     fieldService = {
       updateFields: jest.fn().mockResolvedValue(null),
       deleteFields: jest.fn().mockResolvedValue(null),
@@ -60,13 +76,20 @@ describe('CollectionService', () => {
           provide: getModelToken(Field.name),
           useValue: fieldModel,
         },
+        {
+          provide: getModelToken(Response.name),
+          useValue: responseModel,
+        },
+        {
+          provide: getModelToken(Answer.name),
+          useValue: answerModel,
+        },
         FieldService,
       ],
     }).compile();
 
     service = module.get<CollectionService>(CollectionService);
 
-    // Spying on the methods to track calls
     jest.spyOn(fieldService, 'updateFields');
     jest.spyOn(fieldService, 'deleteFields');
     jest.spyOn(fieldService, 'createFields');
@@ -112,7 +135,7 @@ describe('CollectionService', () => {
     });
   });
 
-  describe('validateFields', () => {
+  describe('checkIsFieldsBelongsToCollection', () => {
     it('should throw BadRequestException if field does not belong to collection', async () => {
       const collectionId = new Types.ObjectId();
       const fieldId = new Types.ObjectId();
@@ -153,6 +176,31 @@ describe('CollectionService', () => {
 
       expect(result).toEqual(fields);
       expect(fieldModel.find).toHaveBeenCalledWith({ collect: collectionId });
+    });
+  });
+
+  describe('fillCollection', () => {
+    it('should validate and save responses', async () => {
+      const userId = new Types.ObjectId();
+      const collectionId = new Types.ObjectId();
+      const responseDTO = {
+        answers: [{ fieldId: new Types.ObjectId(), value: 'Answer' }],
+      };
+
+      jest.spyOn(service, 'validateAnswers').mockResolvedValue();
+      jest.spyOn(service, 'saveResponse').mockResolvedValue();
+
+      await service.fillCollection(userId, collectionId, responseDTO);
+
+      expect(service.validateAnswers).toHaveBeenCalledWith(
+        collectionId,
+        responseDTO.answers,
+      );
+      expect(service.saveResponse).toHaveBeenCalledWith(
+        userId,
+        collectionId,
+        responseDTO.answers,
+      );
     });
   });
 });
