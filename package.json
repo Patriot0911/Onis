@@ -7,7 +7,9 @@
   "scripts": {
     "web:dev": "npx lerna run dev --scope=web",
     "web:lint": "npx lerna run lint --scope=web",
-    "api:lint": "npx lerna run lint --scope=web",
+    "web:test": "npx lerna run test --scope=web",
+    "api:test": "npx lerna run test --scope=api",
+    "api:lint": "npx lerna run lint --scope=api",
     "api:dev": "npx lerna run dev --scope=api",
     "lerna-dockerize": "lerna-dockerize"
   },
