@@ -122,7 +122,7 @@ describe('CollectionService', () => {
       });
 
       await expect(
-        service.validateFields(collectionId, [fieldId]),
+        service.checkIsFieldsBelongsToCollection(collectionId, [fieldId]),
       ).rejects.toThrow(
         new BadRequestException(
           `Field ${fieldId} does not in collection ${collectionId}`,
@@ -137,7 +137,7 @@ describe('CollectionService', () => {
       collectionModel.findById.mockResolvedValue({ fields: [fieldId] });
 
       await expect(
-        service.validateFields(collectionId, [fieldId]),
+        service.checkIsFieldsBelongsToCollection(collectionId, [fieldId]),
       ).resolves.not.toThrow();
     });
   });
