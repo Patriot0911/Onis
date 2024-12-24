@@ -99,6 +99,7 @@ const AuthForm = () => {
                     />
                 </div>
                 <button
+                    data-testid="auth-form-submit-button"
                     onClick={handleSubmit}
                     className="bg-blue-600 rounded-md p-5 text-white mt-2 disabled:bg-gray-400"
                     disabled={isDisabled}>

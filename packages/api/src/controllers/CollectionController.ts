@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Patch, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { CollectionService } from '../services/CollectionService';
 import { UserRequest } from '../utils/security/UserRequest';
 import { Access } from '../utils/security/Access';
