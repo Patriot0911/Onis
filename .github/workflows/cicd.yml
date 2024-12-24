@@ -81,7 +81,8 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
     name: Docker Image Build
-    needs: [lint_back, lint_front, testing_front, testing_back]
+    needs: |
+      lint_back, lint_front, testing_front, testing_back
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -114,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
     name: Deployment
-    needs: [docker_build]
+    needs: docker_build
     steps:
       - name: Deploy
         uses: appleboy/ssh-action@v1.2.0
