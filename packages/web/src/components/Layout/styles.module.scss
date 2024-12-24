@@ -5,7 +5,7 @@
     width: 100%;
     header {
         display: flex;
-        position: fixed;
+        position: sticky;
         overflow: hidden;
         top: 0;
         flex-direction: column;
@@ -85,7 +85,6 @@
         }
     }
     main {
-        padding-left: 20rem;
         display: flex;
         width: 100%;
         flex-direction: column;

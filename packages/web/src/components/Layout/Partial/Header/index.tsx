@@ -2,6 +2,7 @@
 
 import { useAppSelector } from '@/hooks/redux/useAppSelector';
 import { logIn } from '@/redux/features/me/meSlice';
+import FullLoading from '@/components/FullLoading';
 import AuthClientService from '@/services/auth';
 import { useCallback, useEffect } from 'react';
 import { ILayout } from '@/interfaces/layout';
@@ -50,26 +51,28 @@ const Header = ({ redirect, path, hideNav }: ILayout.IHeaderProps) => {
         redirectOnCondition(isAuth);
     }, [isLoading, isAuth, redirectOnCondition]);
     return (
-        isAuth &&
-        !hideNav && (
-            <header>
-                <div className={styles['heading-block']}>
-                    <Link href={'home'} className={styles['link-wrapper']}>
-                        <Image
-                            src={'/static/home-logo.svg'}
-                            alt={'home-logo'}
-                            width={30}
-                            height={30}
-                        />{' '}
-                        <span>Onis</span>
-                    </Link>
-                </div>
-                <Nav />
-                <div className={styles['footer-block']}>
-                    <LogOutButton />
-                </div>
-            </header>
-        )
+        <>
+            {isLoading && redirect === 'NOT_LOGGED' && <FullLoading />}
+            {!hideNav && (
+                <header>
+                    <div className={styles['heading-block']}>
+                        <Link href={'home'} className={styles['link-wrapper']}>
+                            <Image
+                                src={'/static/home-logo.svg'}
+                                alt={'home-logo'}
+                                width={30}
+                                height={30}
+                            />{' '}
+                            <span>Onis</span>
+                        </Link>
+                    </div>
+                    <Nav />
+                    <div className={styles['footer-block']}>
+                        <LogOutButton />
+                    </div>
+                </header>
+            )}
+        </>
     );
 };
 
