@@ -58,7 +58,7 @@ jobs:
         run: npm install
 
       - name: Run Backend Tests
-        run: npm run test
+        run: npm run api:test
 
   testing_front:
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
         run: npm install
 
       - name: Run Backend Tests
-        run: npm run test
+        run: npm run web:test
 
   docker_build:
     runs-on: ubuntu-latest
