@@ -1,0 +1,115 @@
+name: "CI/CD"
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  lint_back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend linter
+        run: npm run api:lint
+
+  lint_front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend linter
+        run: npm run web:lint
+
+  # tests_back:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Install Node.js v.20
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '20'
+
+  #     - name: Install dependencies
+  #       run: npm install
+
+  #     - name: Run Backend Tests
+  #       run: npm run web:test
+
+  # tests_front:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Install Node.js v.20
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '20'
+
+  #     - name: Install dependencies
+  #       run: npm install
+
+  #     - name: Run Frontend Tests
+  #       run: npm run web:test
+
+  docker_build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    name: Docker Image Build
+    # needs: [tests_front, tests_back]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./packages/web
+          file: ./packages/web/Dockerfile
+          push: true
+          tags: patriot25565/onis_front:latest
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   name: Deployment
+  #   needs: [docker_build]
+  #   steps:
+  #     - name: Deploy
+  #       uses: appleboy/ssh-action@master
+  #       with:
+  #         host: ${{ secrets.SSH_HOST }}
+  #         username: ${{ secrets.SSH_USERNAME }}
+  #         password: ${{ secrets.SSH_PASSWORD }}
+  #         port: 22
+  #         script: |
+  #           cd /srv/expressjs/;docker stop expressjs;docker rm expressjs;docker pull gvgodfrey/expressjs:latest;docker-compose up -d
