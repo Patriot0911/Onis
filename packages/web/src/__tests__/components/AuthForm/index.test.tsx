@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
-import AuthForm from '@/components/AuthForm'
-import '@testing-library/jest-dom'
+import { render, screen } from '@testing-library/react';
+import AuthForm from '@/components/AuthForm';
+import '@testing-library/jest-dom';
 
 jest.mock('next/navigation', () => ({
     useRouter: () => ({
@@ -18,10 +18,10 @@ jest.mock('react-redux', () => ({
 
 describe('Auth form Tests', () => {
     it('the submit button must be present', () => {
-        render(<AuthForm />)
+        render(<AuthForm />);
 
         const sumbitButton = screen.getByTestId('auth-form-submit-button');
 
-        expect(sumbitButton).toBeInTheDocument()
-    })
-})
+        expect(sumbitButton).toBeInTheDocument();
+    });
+});

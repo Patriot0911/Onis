@@ -53,13 +53,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          working-directory: ./packages/api
 
       - name: Install dependencies
         run: npm install
+          working-directory: ./packages/api
 
       - name: Run Backend Tests
         run: npm run test
+          working-directory: ./packages/api
 
   testing_front:
     runs-on: ubuntu-latest
@@ -71,13 +72,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          working-directory: ./packages/web
 
       - name: Install dependencies
         run: npm install
+          working-directory: ./packages/web
 
-      - name: Run Backend Tests
+      - name: Run Frontend Tests
         run: npm run test
+          working-directory: ./packages/web
 
   docker_build:
     runs-on: ubuntu-latest
