@@ -113,12 +113,11 @@ jobs:
     needs: [docker_build]
     steps:
       - name: Deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          port: 22
           script: |
             cd /home/projects/;docker stop onis_api;docker stop onis_web;docker rm onis_api;docker rm onis_web;dcoker pull patriot25565/onis_front:latest;dcoker pull patriot25565/onis_back:latest;docker-compose up -d
