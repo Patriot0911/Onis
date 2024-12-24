@@ -4,6 +4,7 @@ import { Model, Types } from 'mongoose';
 import { UpdateField } from 'src/dtos/ChangeFieldsDTO';
 import { FieldDTO } from 'src/dtos/FieldDTO';
 import { Field } from 'src/schemas/FieldSchema';
+import { DeleteResult } from 'mongodb';
 
 @Injectable()
 export class FieldService {
@@ -17,7 +18,7 @@ export class FieldService {
     return this.fieldModel.findByIdAndUpdate(id, data, { new: true });
   }
 
-  async deleteFields(ids: Types.ObjectId[]) {
+  async deleteFields(ids: Types.ObjectId[]): Promise<DeleteResult> {
     return this.fieldModel.deleteMany({
       _id: { $in: ids },
     });

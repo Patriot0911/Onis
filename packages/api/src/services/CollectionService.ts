@@ -15,11 +15,11 @@ import { Response } from 'src/schemas/ResponseSchema';
 import { Answer } from 'src/schemas/AnswerSchema';
 import { AnswerDTO } from 'src/dtos/ResponseDTO';
 
-const Protorypes = {
-  number: Number.prototype,
-  string: String.prototype,
-  date: Date.prototype,
-  boolean: Boolean.prototype,
+const compareTypes = {
+  string: (value: any): boolean => typeof value === 'string',
+  number: (value: any): boolean => typeof value === 'number',
+  boolean: (value: any): boolean => typeof value === 'boolean',
+  date: (value: any): boolean => !isNaN(new Date(value).getTime()),
 };
 
 @Injectable()
@@ -163,8 +163,8 @@ export class CollectionService {
     fields.forEach((field) => {
       if (!field.options) return;
 
-      const isOptionsValid = field.options.every(
-        (option) => typeof option === field.type,
+      const isOptionsValid = field.options.every((option) =>
+        compareTypes[field.type](option),
       );
       if (!isOptionsValid)
         throw new BadRequestException(`All options should be ${field.type}`);
@@ -176,7 +176,7 @@ export class CollectionService {
     collectionId: Types.ObjectId,
     { answers }: CreateResponseDTO,
   ) {
-    this.validateAnswers(collectionId, answers);
+    await this.validateAnswers(collectionId, answers);
     await this.saveResponse(userId, collectionId, answers);
   }
 
@@ -192,7 +192,8 @@ export class CollectionService {
 
     for (const data of answers) {
       const answer = new this.answerModel({
-        ...data,
+        value: data.value,
+        field: data.fieldId,
         response: response._id,
       });
 
@@ -231,11 +232,11 @@ export class CollectionService {
     }
 
     if (usedAnswers.length !== answers.length)
-      throw new BadRequestException('');
+      throw new BadRequestException('One is this fields ids out of collection');
   }
 
-  validateAnswer(field: Field, answer: any) {
-    if (Protorypes[field.type] !== answer.prototype)
+  private validateAnswer(field: Field, answer: any) {
+    if (!compareTypes[field.type](answer))
       throw new BadRequestException(
         `Type for field ${field.name} should be a ${field.type}`,
       );
@@ -245,7 +246,7 @@ export class CollectionService {
       );
   }
 
-  validateAnswerArray(field: Field, answer: AnswerDTO) {
+  private validateAnswerArray(field: Field, answer: AnswerDTO) {
     if (!Array.isArray(answer.value))
       throw new BadRequestException(`Field ${field.name} should be an array`);
     answer.value.forEach((value) => this.validateAnswer(field, value));

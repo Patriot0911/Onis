@@ -10,6 +10,8 @@ export class FieldMapper {
       description: field.description,
       type: field.type,
       isArray: field.isArray,
+      options: field.options,
+      isRequired: field.isRequired,
     };
   }
 

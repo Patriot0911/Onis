@@ -7,4 +7,6 @@ export class FieldResponse {
   description: string;
   type: Type;
   isArray: boolean;
+  options: any;
+  isRequired: boolean;
 }
