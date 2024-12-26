@@ -1,19 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
 import { InjectModel } from '@nestjs/mongoose';
-import { Collection } from '../schemas/CollectionSchema';
-import { Participant, RoleName } from '../schemas/ParticipantSchema';
-import { Grants } from './ParticipantService';
 import { Model, Types } from 'mongoose';
-import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
-import { ChangeFieldsDTO, UpdateField } from 'src/dtos/ChangeFieldsDTO';
+import { ChangeFieldsDTO, UpdateField } from '../dtos/ChangeFieldsDTO';
+import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
+import { CreateResponseDTO } from '../dtos/CreateResponseDTO';
+import { FieldDTO } from '../dtos/FieldDTO';
+import { AnswerDTO } from '../dtos/ResponseDTO';
+import { UpdateCollectionDTO } from '../dtos/UpdateCollectionDTO';
+import { Answer } from '../schemas/AnswerSchema';
+import { Collection } from '../schemas/CollectionSchema';
+import { Field } from '../schemas/FieldSchema';
+import { Participant, RoleName } from '../schemas/ParticipantSchema';
+import { Response } from '../schemas/ResponseSchema';
 import { FieldService } from './FieldService';
-import { FieldDTO } from 'src/dtos/FieldDTO';
-import { Field } from 'src/schemas/FieldSchema';
-import { CreateResponseDTO } from 'src/dtos/CreateResponseDTO';
-import { Response } from 'src/schemas/ResponseSchema';
-import { Answer } from 'src/schemas/AnswerSchema';
-import { AnswerDTO } from 'src/dtos/ResponseDTO';
+import { Grants } from './ParticipantService';
 
 const compareTypes = {
   string: (value: any): boolean => typeof value === 'string',

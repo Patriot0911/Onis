@@ -6,8 +6,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Types } from 'mongoose';
+import { ToObjectId } from '../utils/decorators/toObjectId';
 import { FieldDTO } from './FieldDTO';
-import { ToObjectId } from 'src/utils/decorators/toObjectId';
 
 export class UpdateField {
   @IsNotEmpty()

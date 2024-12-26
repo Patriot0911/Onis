@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Post, Res } from '@nestjs/common';
-import { UserRequest } from '../utils/security/UserRequest';
-import { UserResponse } from '../responses/UserResponse';
-import { AuthService } from '../services/AuthService';
-import { CreateUserDTO } from '../dtos/CreateUserDTO';
-import { AuthUserDTO } from 'src/dtos/AuthUserDTO';
-import { UserMapper } from '../mappers/UserMapper';
-import { Access } from '../utils/security/Access';
-import { User } from '../schemas/UserSchema';
 import { Response } from 'express';
+import { AuthUserDTO } from '../dtos/AuthUserDTO';
+import { CreateUserDTO } from '../dtos/CreateUserDTO';
+import { UserMapper } from '../mappers/UserMapper';
+import { UserResponse } from '../responses/UserResponse';
+import { User } from '../schemas/UserSchema';
+import { AuthService } from '../services/AuthService';
+import { Access } from '../utils/security/Access';
+import { UserRequest } from '../utils/security/UserRequest';
 
 @Controller('auth')
 export class AuthController {

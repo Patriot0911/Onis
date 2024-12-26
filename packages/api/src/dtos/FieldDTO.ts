@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { Type } from 'src/schemas/FieldSchema';
+import { Type } from '../schemas/FieldSchema';
 
 export class FieldDTO {
   @IsNotEmpty()
