@@ -1,6 +1,6 @@
 import InnerLayout from '@/components/InnerLayout';
 
-const MyPollsPage = () => {
+const CollectionsPage = () => {
     return (
         <InnerLayout>
             <div className="flex justify-center items-center"></div>
@@ -8,4 +8,4 @@ const MyPollsPage = () => {
     );
 };
 
-export default MyPollsPage;
+export default CollectionsPage;

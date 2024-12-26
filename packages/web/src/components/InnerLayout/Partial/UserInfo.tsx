@@ -4,7 +4,7 @@ import { useAppSelector } from '@/hooks/redux/useAppSelector';
 import { FaUser } from 'react-icons/fa';
 import Image from 'next/image';
 
-import styles from './styles.module.scss';
+import styles from '../styles.module.scss';
 
 const UserInfo = () => {
     const { avatar, username } = useAppSelector(

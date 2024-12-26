@@ -1,6 +1,6 @@
 import { MdOutlineSearch } from 'react-icons/md';
 import { PropsWithChildren } from 'react';
-import UserInfo from './UserInfo';
+import { UserInfo } from './Partial';
 
 import styles from './styles.module.scss';
 
