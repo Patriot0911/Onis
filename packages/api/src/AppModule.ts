@@ -20,7 +20,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
           ttl: 5,
           limit: 200,
         },
-      ]
+      ],
     }),
   ],
 })
