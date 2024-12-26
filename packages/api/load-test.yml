@@ -2,11 +2,11 @@ config:
   target: "http://localhost:3001"
   phases:
     - duration: 30
-      arrivalRate: 10
-    - duration: 30
       arrivalRate: 30
     - duration: 30
       arrivalRate: 40
+    - duration: 30
+      arrivalRate: 60
   defaults:
     headers:
       Content-Type: "application/json"
