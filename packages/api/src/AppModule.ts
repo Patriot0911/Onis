@@ -13,15 +13,15 @@ import { ThrottlerModule } from '@nestjs/throttler';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    // ThrottlerModule.forRoot({
-    //   throttlers: [
-    //     {
-    //       blockDuration: 10,
-    //       ttl: 5,
-    //       limit: 200,
-    //     },
-    //   ],
-    // }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          blockDuration: 5,
+          ttl: 10,
+          limit: 200,
+        },
+      ],
+    }),
   ],
 })
 export class AppModule {}
