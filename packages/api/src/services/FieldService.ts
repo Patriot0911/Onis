@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { UpdateField } from 'src/dtos/ChangeFieldsDTO';
-import { FieldDTO } from 'src/dtos/FieldDTO';
-import { Field } from 'src/schemas/FieldSchema';
 import { DeleteResult } from 'mongodb';
+import { Model, Types } from 'mongoose';
+import { UpdateField } from '../dtos/ChangeFieldsDTO';
+import { FieldDTO } from '../dtos/FieldDTO';
+import { Field } from '../schemas/FieldSchema';
 
 @Injectable()
 export class FieldService {

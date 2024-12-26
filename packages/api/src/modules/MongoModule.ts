@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '../schemas/UserSchema';
 import { ConfigService } from '@nestjs/config';
-import { Participant, ParticipantSchema } from '../schemas/ParticipantSchema';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Answer, AnswerSchema } from '../schemas/AnswerSchema';
 import { Collection, CollectionSchema } from '../schemas/CollectionSchema';
-import { Field, FieldSchema } from 'src/schemas/FieldSchema';
-import { Response, ResponseSchema } from 'src/schemas/ResponseSchema';
-import { Answer, AnswerSchema } from 'src/schemas/AnswerSchema';
+import { Field, FieldSchema } from '../schemas/FieldSchema';
+import { Participant, ParticipantSchema } from '../schemas/ParticipantSchema';
+import { Response, ResponseSchema } from '../schemas/ResponseSchema';
+import { User, UserSchema } from '../schemas/UserSchema';
 
 @Module({
   imports: [

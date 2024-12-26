@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
-import { ToObjectId } from 'src/utils/decorators/toObjectId';
+import { ToObjectId } from '../utils/decorators/toObjectId';
 
 export class AnswerDTO {
   @IsNotEmpty()

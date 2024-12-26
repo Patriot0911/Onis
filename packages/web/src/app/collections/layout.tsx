@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: Readonly<PropsWithChildren>) => {
     return (
-        <Layout redirect={'NOT_LOGGED'} path={'auth'}>
+        <Layout redirect={'NOT_LOGGED'} path={'auth'} bgClr={'secondary'}>
             {children}
         </Layout>
     );

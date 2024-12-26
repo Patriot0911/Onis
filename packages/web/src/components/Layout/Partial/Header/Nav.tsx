@@ -1,5 +1,4 @@
 import { IoExtensionPuzzle } from 'react-icons/io5';
-import { MdSpaceDashboard } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
 import { PiNoteFill } from 'react-icons/pi';
 import { HiUsers } from 'react-icons/hi';
@@ -7,6 +6,7 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 
 import styles from '../../styles.module.scss';
+import { RiChatPollLine } from 'react-icons/ri';
 
 interface IPageData {
     label: string;
@@ -16,19 +16,19 @@ interface IPageData {
 
 const pages: IPageData[] = [
     {
-        icon: <MdSpaceDashboard />,
-        label: 'Дашборд',
-        href: '/dashboard',
+        icon: <PiNoteFill />,
+        label: 'Мої колекції',
+        href: '/my-collections',
+    },
+    {
+        icon: <RiChatPollLine />,
+        label: 'Мої опитування',
+        href: '/my-polls',
     },
     {
         icon: <HiUsers />,
         label: 'Публічні колекції',
         href: '/collections',
-    },
-    {
-        icon: <PiNoteFill />,
-        label: 'Мої колекції',
-        href: '/my-collections',
     },
     {
         icon: <IoExtensionPuzzle />,

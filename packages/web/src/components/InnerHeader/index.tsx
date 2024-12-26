@@ -15,14 +15,7 @@ const InnerHeader = ({ children }: PropsWithChildren) => {
     const path = usePathname();
     const [pathState, setPathState] = useState<string[]>([]);
     useEffect(() => {
-        const parts = path
-            .split('/')
-            .filter(Boolean)
-            .map((item: string) =>
-                Object.keys(pathNames).includes(item)
-                    ? pathNames[item as keyof typeof pathNames]
-                    : item,
-            );
+        const parts = path.split('/').filter(Boolean);
         setPathState(parts);
     }, [path]);
     return (
@@ -39,7 +32,9 @@ const InnerHeader = ({ children }: PropsWithChildren) => {
                                     ? styles['last']
                                     : '') + ` ${styles['path-name']}`
                             }>
-                            {item}
+                            {Object.keys(pathNames).includes(item)
+                                ? pathNames[item as keyof typeof pathNames]
+                                : item}
                         </Link>
                         {index !== pathState.length - 1 && (
                             <MdKeyboardArrowRight />

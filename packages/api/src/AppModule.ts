@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/AuthModule';
 import { UserModule } from './modules/UserModule';
 import { CollectionModule } from './modules/CollectionModule';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -11,6 +12,15 @@ import { CollectionModule } from './modules/CollectionModule';
     CollectionModule,
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          blockDuration: 10,
+          ttl: 5,
+          limit: 200,
+        },
+      ],
     }),
   ],
 })
