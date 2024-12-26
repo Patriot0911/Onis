@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseInterceptors } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { UserData } from '../data/UserData';
 import { ChangeFieldsDTO } from '../dtos/ChangeFieldsDTO';
@@ -13,8 +13,10 @@ import { CollectionService } from '../services/CollectionService';
 import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
 import { Access } from '../utils/security/Access';
 import { UserRequest } from '../utils/security/UserRequest';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('collections')
+@UseInterceptors(CacheInterceptor)
 export class CollectionController {
   constructor(private readonly collectionService: CollectionService) {}
 
