@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CollectionController } from '../controllers/CollectionController';
 import { CollectionService } from '../services/CollectionService';
+import { FieldService } from '../services/FieldService';
 import { MongoModule } from './MongoModule';
 import { ParticipantModule } from './ParticipantModule';
-import { FieldService } from 'src/services/FieldService';
 
 @Module({
   controllers: [CollectionController],

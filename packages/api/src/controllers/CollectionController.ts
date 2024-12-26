@@ -1,18 +1,18 @@
-import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
-import { CollectionService } from '../services/CollectionService';
-import { UserRequest } from '../utils/security/UserRequest';
-import { Access } from '../utils/security/Access';
-import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
-import { CollectionMapper } from '../mappers/CollectionMapper';
-import { CollectionResponse } from '../responses/CollectionResponse';
-import { UpdateCollectionDTO } from 'src/dtos/UpdateCollectionDTO';
-import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { ChangeFieldsDTO } from 'src/dtos/ChangeFieldsDTO';
-import { UserData } from 'src/data/UserData';
-import { FieldMapper } from 'src/mappers/FieldMapper';
-import { FieldResponse } from 'src/responses/FieldsResponse';
-import { CreateResponseDTO } from 'src/dtos/CreateResponseDTO';
+import { UserData } from '../data/UserData';
+import { ChangeFieldsDTO } from '../dtos/ChangeFieldsDTO';
+import { CreateCollectionDTO } from '../dtos/CreateCollectionDTO';
+import { CreateResponseDTO } from '../dtos/CreateResponseDTO';
+import { UpdateCollectionDTO } from '../dtos/UpdateCollectionDTO';
+import { CollectionMapper } from '../mappers/CollectionMapper';
+import { FieldMapper } from '../mappers/FieldMapper';
+import { CollectionResponse } from '../responses/CollectionResponse';
+import { FieldResponse } from '../responses/FieldsResponse';
+import { CollectionService } from '../services/CollectionService';
+import { CollectionByIdPipe } from '../utils/pipes/CollectionByIdPipe';
+import { Access } from '../utils/security/Access';
+import { UserRequest } from '../utils/security/UserRequest';
 
 @Controller('collections')
 export class CollectionController {
