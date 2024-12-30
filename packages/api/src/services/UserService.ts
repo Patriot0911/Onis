@@ -2,38 +2,50 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../schemas/UserSchema';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
+import { ParticipantService } from './ParticipantService';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    private readonly participantService: ParticipantService,
+  ) {}
 
   async create(data: CreateUserDTO): Promise<User> {
     const user = new this.userModel(data);
     return user.save();
   }
 
-  async findById(id: mongoose.Schema.Types.ObjectId): Promise<User> {
+  async findById(id: Types.ObjectId): Promise<User> {
     return this.userModel.findById(id);
   }
 
-  async findByLoginOrEmail(emailOrUserName: string): Promise<User> {
-    return this.userModel
-      .findOne({
-        $or: [
-          {
-            username: emailOrUserName,
-          }, {
-            email: emailOrUserName,
-          },
-        ],
-      })
-      .exec();
-  };
+  async findByEmail(email: string): Promise<User> {
+    return this.userModel.findOne({
+      email,
+    });
+  }
 
-  async findByLogin(username: string): Promise<User> {
-    return this.userModel
-      .findOne({ username, })
-      .exec();
+  async toggleCollection(id: Types.ObjectId, collectionId: Types.ObjectId) {
+    const user = await this.userModel.findById(id);
+
+    const isCollectionSaved = user.savedCollections.some(
+      (savedCollectionId: Types.ObjectId) =>
+        savedCollectionId.equals(collectionId),
+    );
+
+    const updateOperation = isCollectionSaved
+      ? { $pull: { savedCollections: collectionId } }
+      : { $addToSet: { savedCollections: collectionId } };
+
+    return this.userModel.findByIdAndUpdate(id, updateOperation);
+  }
+
+  async getCollectionsByUserId(id: Types.ObjectId) {
+    const participants =
+      await this.participantService.getParticipantsByUserId(id);
+
+    return participants.map((participant) => participant.collect);
   }
 }

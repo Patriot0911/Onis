@@ -1,31 +1,59 @@
 import { IMeInitialState, IUserLoginPayload } from '@/interfaces/redux';
-import { createSlice, } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: IMeInitialState = {
     value: {
+        avatar: '',
+        username: '',
         isAuth: false,
-        userName: '',
-        email: '',
+        isLoading: true,
     },
 };
+
+const authDataRefresh = process.env.NEXT_PUBLIC_AUTH_REFRESH_REQ;
 
 export const meSlice = createSlice({
     name: 'me',
     initialState,
     reducers: {
-        logIn: (state: any, { payload, type, }: IUserLoginPayload) => {
-            if(!payload.email || !payload.userName)
-                return;
-            state.value.isAuth = true;
-            state.value.userName = payload.userName;
-            state.value.email = payload.userName;
+        logIn: (_: unknown, { payload }: IUserLoginPayload) => {
+            if (!payload.username) return;
+            const baseState = {
+                isAuth: true,
+                avatar: payload.avatar,
+                username: payload.username,
+            };
+            localStorage.setItem(
+                'authState',
+                JSON.stringify({
+                    ...baseState,
+                    expires: new Date().getTime() + parseInt(authDataRefresh),
+                }),
+            );
+            return {
+                value: {
+                    ...baseState,
+                    isLoading: false,
+                },
+            };
         },
-        logOut: (state) => {
-            state = initialState;
+        logOut: () => {
+            localStorage.setItem(
+                'authState',
+                JSON.stringify({
+                    isAuth: false,
+                    expires: new Date().getTime() + parseInt(authDataRefresh),
+                }),
+            );
+            return {
+                value: {
+                    ...initialState.value,
+                    isLoading: false,
+                },
+            };
         },
     },
 });
 
-export const { logIn, logOut, } = meSlice.actions
-
+export const { logIn, logOut } = meSlice.actions;
 export default meSlice.reducer;

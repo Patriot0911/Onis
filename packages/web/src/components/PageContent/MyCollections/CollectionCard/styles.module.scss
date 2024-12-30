@@ -1,0 +1,40 @@
+.button-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: var(--color-primary);
+    height: 2.2rem;
+    width: 2.2rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.4rem;
+    transition: background-color ease-in-out 0.2s;
+    &:hover {
+        background-color: #3f87f3;
+    }
+    .settings-button {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.845);
+    }
+}
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .item-heading {
+        font-size: 1.3rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 85%;
+        text-wrap: nowrap;
+    }
+    .item-description {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: 12rem;
+    }
+}

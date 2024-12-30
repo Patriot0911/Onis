@@ -1,18 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Collection } from './CollectionSchema';
-import mongoose, { Document } from 'mongoose';
+import { Types, Document } from 'mongoose';
 
 @Schema()
 export class User extends Document {
   @Prop({
     required: true,
-    unique: true,
+    unique: false,
   })
   username: string;
 
   @Prop({
-    required: true,
     unique: true,
+    required: true,
   })
   email: string;
 
@@ -27,18 +26,25 @@ export class User extends Document {
   avatar: string;
 
   @Prop({
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [Types.ObjectId],
     ref: 'Collection',
     default: [],
   })
-  collections: Collection[];
+  collections: Types.ObjectId[];
 
   @Prop({
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [Types.ObjectId],
     ref: 'Collection',
     default: [],
   })
-  savedCollection: Collection[];
+  savedCollections: Types.ObjectId[];
+
+  @Prop({
+    type: [Types.ObjectId],
+    ref: 'Response',
+    default: [],
+  })
+  responses: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

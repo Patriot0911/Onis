@@ -1,0 +1,127 @@
+name: "CI/CD"
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  lint_back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend linter
+        run: npm run api:lint
+
+  lint_front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend linter
+        run: npm run web:lint
+
+  testing_back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend Tests
+        run: npm run api:test
+
+  testing_front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js v.20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Backend Tests
+        run: npm run web:test
+
+  docker_build:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
+    name: Docker Image Build
+    needs: [lint_back, lint_front, testing_front, testing_back]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build Docker image for Frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./packages/web
+          file: ./packages/web/Dockerfile
+          push: true
+          tags: patriot25565/onis_front:latest
+          build-args: |
+            NEXT_PUBLIC_BACKEND_URL=${{ vars.NEXT_PUBLIC_BACKEND_URL }}
+            NEXT_PUBLIC_AUTH_REFRESH_REQ=${{ vars.NEXT_PUBLIC_AUTH_REFRESH_REQ }}
+
+      - name: Build Docker image for Backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./packages/api
+          file: ./packages/api/Dockerfile
+          push: true
+          tags: patriot25565/onis_back:latest
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/deployment'
+    name: Deployment
+    needs: [docker_build]
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd /home/projects/;docker-compose down;docker pull patriot25565/onis_front:latest;docker pull patriot25565/onis_back:latest;docker-compose up -d

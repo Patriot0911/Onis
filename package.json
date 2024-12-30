@@ -6,10 +6,15 @@
   ],
   "scripts": {
     "web:dev": "npx lerna run dev --scope=web",
-    "api:dev": "npx lerna run dev --scope=api"
+    "web:lint": "npx lerna run lint --scope=web",
+    "web:test": "npx lerna run test --scope=web",
+    "api:test": "npx lerna run test --scope=api",
+    "api:lint": "npx lerna run lint --scope=api",
+    "api:dev": "npx lerna run dev --scope=api",
+    "lerna-dockerize": "lerna-dockerize"
   },
   "dependencies": {
-    "react-icons": "^5.3.0",
+    "lerna-dockerize": "^1.0.9",
     "root": "file:"
   },
   "devDependencies": {

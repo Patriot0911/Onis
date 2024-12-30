@@ -1,9 +1,10 @@
-import { IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class AuthUserDTO {
-  @IsNotEmpty({ message: 'Login cannot be empty' })
-  @IsString({ message: 'Login must be a string' })
-  emailOrUserName: string;
+  @IsNotEmpty({ message: 'Email cannot be empty' })
+  @IsString({ message: 'Email must be a string' })
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty({ message: 'Password cannot be empty' })
   @IsString({ message: 'Password must be a string' })

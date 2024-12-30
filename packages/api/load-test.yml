@@ -1,0 +1,39 @@
+config:
+  target: "http://localhost:3001"
+  phases:
+    - duration: 30
+      arrivalRate: 30
+    - duration: 30
+      arrivalRate: 40
+    - duration: 30
+      arrivalRate: 60
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: Auth and Fetch User Data
+    flow:
+      - post:
+          url: "/auth/login"
+          json:
+            email: "qwerty123@gmail.com"
+            password: "qwerty123"
+      - think: 2
+      - get:
+          url: "/auth/me"
+  - name: Collections Operations
+    flow:
+      - post:
+          url: "/auth/login"
+          json:
+            email: "qwerty123@gmail.com"
+            password: "qwerty123"
+      - think: 2
+      - get:
+          url: "/users/collections/me"
+      - post:
+          url: "/collections"
+          json:
+            title: "Test Collection"
+            description: "Collection for testing purposes"

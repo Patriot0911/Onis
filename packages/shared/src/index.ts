@@ -1,3 +1,0 @@
-export {
-    testFc,
-} from './testFc';

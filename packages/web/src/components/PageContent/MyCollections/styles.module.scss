@@ -1,0 +1,14 @@
+.my-collection-wrapper {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    .list {
+        display: flex;
+        flex-wrap: wrap;
+        flex-grow: 1;
+        gap: 1rem;
+        row-gap: 1rem;
+    }
+}

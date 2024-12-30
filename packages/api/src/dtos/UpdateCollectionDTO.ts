@@ -1,16 +1,15 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { Status } from 'src/schemas/CollectionSchema';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateCollectionDTO {
   @IsOptional()
   @IsString()
-  title: string;
+  title?: string;
 
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @IsOptional()
-  @IsEnum(Status)
-  status: Status;
+  @IsString()
+  image?: string;
 }

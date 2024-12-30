@@ -7,7 +7,12 @@ interface NicknameInputProps {
     hasSubmitted: boolean;
 }
 
-const NicknameInput = ({ value, onChange, isLogin, hasSubmitted }: NicknameInputProps) => {
+const NicknameInput = ({
+    value,
+    onChange,
+    isLogin,
+    hasSubmitted,
+}: NicknameInputProps) => {
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -25,10 +30,13 @@ const NicknameInput = ({ value, onChange, isLogin, hasSubmitted }: NicknameInput
                 placeholder="Нікнейм"
                 className="p-5 border-blue-600 border-2 rounded-md"
                 value={value}
+                name={'username'}
                 onChange={(e) => onChange(e.target.value)}
             />
-            <div className='h-6 my-2'>
-                {error && hasSubmitted && <p className="text-red-500">{error}</p>}
+            <div className="h-6 my-2">
+                {error && hasSubmitted && (
+                    <p className="text-red-500">{error}</p>
+                )}
             </div>
         </>
     );

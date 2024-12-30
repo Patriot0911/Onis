@@ -1,16 +1,92 @@
 .global-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     min-height: 100dvh;
     width: 100%;
     header {
         display: flex;
-        flex-direction: row;
+        position: sticky;
+        overflow: hidden;
+        top: 0;
+        flex-direction: column;
         justify-content: space-between;
+        height: 100dvh;
+        width: 20rem;
+        background-color: var(--color-bg-primary);
+        border-top-right-radius: 0.6rem;
+        border-bottom-right-radius: 0.6rem;
+        padding: 1rem;
+        padding-bottom: 1.5rem;
+        padding-top: 1.2rem;
+        .heading-block {
+            padding: 0 1rem;
+            .link-wrapper {
+                display: flex;
+                color: white;
+                align-items: center;
+                gap: 0.5rem;
+                flex-direction: row;
+                font-size: 2rem;
+                font-weight: 600;
+                user-select: none;
+                width: fit-content;
+            }
+        }
+        .main-block {
+            flex-grow: 1;
+            padding: 8rem 0;
+            gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            .nav-item {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                gap: 0.4rem;
+                padding: 0.6rem 0.5rem;
+                font-size: 1.2rem;
+                color: white;
+                svg {
+                    width: 1.6rem;
+                    height: 1.6rem;
+                }
+            }
+            .item-active {
+                color: var(--color-primary);
+                background-color: white;
+                border-radius: 1rem;
+            }
+        }
+        .footer-block {
+            padding: 0 1.4rem;
+            .exit-action-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: fit-content;
+                gap: 0.6rem;
+                color: white;
+                user-select: none;
+                cursor: pointer;
+                &:hover {
+                    svg {
+                        transform: translateX(3px);
+                    }
+                }
+                span {
+                    font-size: 1.5rem;
+                }
+                svg {
+                    transition: transform ease-in-out 0.4s;
+                    width: 1.4rem;
+                    height: 1.4rem;
+                }
+            }
+        }
     }
     main {
         display: flex;
-        flex-grow: 1;
+        width: 100%;
         flex-direction: column;
         justify-content: center;
     }

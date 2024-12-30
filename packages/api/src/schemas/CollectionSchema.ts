@@ -1,12 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Participant } from './ParticipantSchema';
-import mongoose, { Document } from 'mongoose';
-
-export enum Status {
-  ACTIVE = 'ACTIVE',
-  DRAFT = 'DRAFT',
-  CLOSE = 'CLOSE',
-}
+import { Types, Document } from 'mongoose';
 
 @Schema()
 export class Collection extends Document {
@@ -20,18 +13,33 @@ export class Collection extends Document {
   })
   description: string;
 
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: 'User' })
-  participants: Participant[];
-
   @Prop({
-    default: Status.DRAFT,
+    required: false,
+    default: null,
   })
-  status: Status;
+  image: string;
+
+  @Prop({ type: [Types.ObjectId], ref: 'Participant' })
+  participants: Types.ObjectId[];
 
   @Prop({
     default: Date.now(),
   })
   createdAt: Date;
+
+  @Prop({
+    type: [Types.ObjectId],
+    ref: 'Field',
+    default: [],
+  })
+  fields: Types.ObjectId[];
+
+  @Prop({
+    type: [Types.ObjectId],
+    ref: 'Response',
+    default: [],
+  })
+  responses: Response[];
 }
 
 export const CollectionSchema = SchemaFactory.createForClass(Collection);

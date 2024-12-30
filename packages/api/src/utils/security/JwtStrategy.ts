@@ -34,11 +34,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     const user: User = await this.userModel.findById(payload.sub);
 
-    delete user.password;
-
     if (!user) {
       throw new UnauthorizedException();
     }
+    delete user.password;
 
     return user;
   }

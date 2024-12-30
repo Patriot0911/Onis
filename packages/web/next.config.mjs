@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    output: 'standalone',
     redirects: () => [
         {
             source: '/',
-            destination: '/welcome',
+            destination: '/home',
             permanent: true,
         },
     ],
