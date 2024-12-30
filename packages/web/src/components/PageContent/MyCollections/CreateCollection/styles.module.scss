@@ -1,0 +1,32 @@
+.wrapper {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    &:hover {
+        svg {
+            transform: translateY(8px) scale(1.1);
+            opacity: 1;
+        }
+        span {
+            opacity: 1;
+        }
+    }
+    svg {
+        transition: transform ease-in-out 0.5s, opacity ease-in-out 0.4s;
+        width: 7rem;
+        height: 7rem;
+        opacity: 0.6;
+        color: var(--color-light);
+    }
+    span {
+        user-select: none;
+        font-size: 1.3rem;
+        font-weight: 500;
+        opacity: 0.9;
+        color: white;
+        text-shadow: 0px 0px 1px black;
+    }
+}
