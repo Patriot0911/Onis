@@ -8,6 +8,6 @@ export declare namespace ICollectionCard {
     interface ICollectionCardProps {
         id: string;
         name: string;
-        description: string;
+        description?: string;
     };
 };

@@ -5,10 +5,10 @@ interface NameInputProps {
 
 const NameInput = ({ value, onChange }: NameInputProps) => (
     <label className="flex flex-col">
-        <span className="text-sm font-medium text-gray-700">Name</span>
+        <span className="text-sm font-medium text-gray-700">Title</span>
         <input
             type="text"
-            name="name"
+            name="title"
             value={value}
             onChange={onChange}
             placeholder="Enter project name"

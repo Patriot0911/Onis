@@ -4,7 +4,7 @@ const nextConfig = {
     redirects: () => [
         {
             source: '/',
-            destination: '/home',
+            destination: '/my-collections',
             permanent: true,
         },
     ],

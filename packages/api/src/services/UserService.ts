@@ -42,10 +42,7 @@ export class UserService {
     return this.userModel.findByIdAndUpdate(id, updateOperation);
   }
 
-  async getCollectionsByUserId(id: Types.ObjectId) {
-    const participants =
-      await this.participantService.getParticipantsByUserId(id);
-
-    return participants.map((participant) => participant.collect);
+  async getCollectionsByUserId(id: Types.ObjectId, take: number, skip: number) {
+    return this.participantService.getParticipantCollections(id, take, skip);
   }
 }

@@ -3,6 +3,7 @@ import { Participant } from '../schemas/ParticipantSchema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ParticipantWithCollection } from '../data/ParticipantData';
+import { Collection } from '../schemas/CollectionSchema';
 
 export const Grants = {
   all: (collectionId) => `collections.${collectionId}.*`,
@@ -65,4 +66,12 @@ export class ParticipantService {
       path: 'collect',
     })) as ParticipantWithCollection[];
   }
+
+  async getParticipantCollections(
+    userId: Types.ObjectId,
+    take: number,
+    skip: number,
+  ): Promise<Collection[]> {
+    return [];
+  };
 }
