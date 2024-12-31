@@ -64,6 +64,10 @@ export class ParticipantService {
   ): Promise<ParticipantWithCollection[]> {
     return (await this.participantModel.find({ user: userId }).populate({
       path: 'collect',
+      options: {
+        skip: 0,
+        take: 25,
+      }
     })) as ParticipantWithCollection[];
   }
 
@@ -71,7 +75,20 @@ export class ParticipantService {
     userId: Types.ObjectId,
     take: number,
     skip: number,
-  ): Promise<Collection[]> {
-    return [];
+  ): Promise<any[]> {
+    const res = await (this.participantModel
+      .find({ user: userId, })
+      .limit(take)
+      .skip(skip)
+      .populate({
+        path: 'collect',
+      })
+      .exec());
+    const collections = res.map(
+      (item) => ({
+        ...item.collect
+      }),
+    );
+    return collections;
   };
 }

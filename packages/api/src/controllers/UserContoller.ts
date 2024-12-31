@@ -9,11 +9,11 @@ import { CollectionsResponse } from '../responses/CollectionResponse';
 import { CollectionMapper } from '../mappers/CollectionMapper';
 import { UserData } from '../data/UserData';
 
-const maxTake = 100;
-
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+  ) {}
 
   @Access()
   @Post('collections/:collectionId/toggle')
@@ -28,10 +28,10 @@ export class UsersController {
   @Get('collections/me')
   async getAllCollections(
     @UserRequest() user: UserData,
-    @Query('take') take: number = 10,
-    @Query('skip') skip: number = 0,
+    @Query('take') take: number,
+    @Query('skip') skip: number,
   ): Promise<CollectionsResponse> {
-    const collections = await this.userService.getCollectionsByUserId(user._id, take > maxTake ? maxTake : take, skip);
-    return CollectionMapper.getCollectionResponses(collections);
+    const collections = await this.userService.getCollectionsByUserId(user._id, take, skip);
+    return CollectionMapper.getCollectionResponses(collections as any);
   }
 }
