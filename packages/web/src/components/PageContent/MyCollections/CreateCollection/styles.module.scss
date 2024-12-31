@@ -7,7 +7,6 @@
     cursor: pointer;
     &:hover {
         svg {
-            transform: translateY(8px) scale(1.1);
             opacity: 1;
         }
         span {
@@ -15,7 +14,8 @@
         }
     }
     svg {
-        transition: transform ease-in-out 0.5s, opacity ease-in-out 0.4s;
+        transition: opacity ease-in-out 0.1s;
+        transform: translateY(8px) scale(1.1);
         width: 7rem;
         height: 7rem;
         opacity: 0.6;

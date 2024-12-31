@@ -43,8 +43,8 @@ export class UserService {
   }
 
   async getCollectionsByUserId(id: Types.ObjectId, take: number, skip: number) {
-    const pTake = (isNaN(take) || !take || take < 0) ? 15 : take;
-    const pSkip = (isNaN(take) || !take || take < 0) ? 0 : take;
+    const pTake = isNaN(take) || !take || take < 0 ? 15 : take;
+    const pSkip = isNaN(skip) || !skip || skip < 0 ? 0 : skip;
     return this.participantService.getParticipantCollections(id, pTake, pSkip);
   }
 }

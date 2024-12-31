@@ -3,7 +3,6 @@ import { Participant } from '../schemas/ParticipantSchema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ParticipantWithCollection } from '../data/ParticipantData';
-import { Collection } from '../schemas/CollectionSchema';
 
 export const Grants = {
   all: (collectionId) => `collections.${collectionId}.*`,
@@ -64,10 +63,6 @@ export class ParticipantService {
   ): Promise<ParticipantWithCollection[]> {
     return (await this.participantModel.find({ user: userId }).populate({
       path: 'collect',
-      options: {
-        skip: 0,
-        take: 25,
-      }
     })) as ParticipantWithCollection[];
   }
 
@@ -76,19 +71,16 @@ export class ParticipantService {
     take: number,
     skip: number,
   ): Promise<any[]> {
-    const res = await (this.participantModel
-      .find({ user: userId, })
+    const res = await this.participantModel
+      .find({ user: userId })
       .limit(take)
       .skip(skip)
       .populate({
         path: 'collect',
       })
-      .exec());
-    const collections = res.map(
-      (item) => ({
-        ...item.collect
-      }),
-    );
-    return collections;
-  };
+      .exec();
+    return res.map((item) => ({
+      ...(item.collect as any)._doc,
+    }));
+  }
 }

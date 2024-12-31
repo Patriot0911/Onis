@@ -1,5 +1,5 @@
-import { useDialog } from "@/hooks/useDialog";
-import { ReactNode } from "react";
+import { useDialog } from '@/hooks/useDialog';
+import { ReactNode } from 'react';
 
 interface DialogTriggerProps {
     children: ReactNode;
@@ -12,8 +12,7 @@ const DialogTrigger = ({ children, className }: DialogTriggerProps) => {
     return (
         <button
             onClick={openDialog}
-            className={`px-4 py-2 text-primary bg-white rounded hover:bg-secondary ${className}`}
-        >
+            className={`px-4 py-2 text-primary bg-white rounded hover:bg-secondary ${className}`}>
             {children}
         </button>
     );

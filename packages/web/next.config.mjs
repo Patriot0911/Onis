@@ -7,6 +7,11 @@ const nextConfig = {
             destination: '/my-collections',
             permanent: true,
         },
+        {
+            source: '/home',
+            destination: '/my-collections',
+            permanent: true,
+        },
     ],
 };
 

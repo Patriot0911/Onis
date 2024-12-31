@@ -56,7 +56,9 @@ const Header = ({ redirect, path, hideNav }: ILayout.IHeaderProps) => {
             {!hideNav && (
                 <header>
                     <div className={styles['heading-block']}>
-                        <Link href={'/my-collections'} className={styles['link-wrapper']}>
+                        <Link
+                            href={'/my-collections'}
+                            className={styles['link-wrapper']}>
                             <Image
                                 src={'/static/home-logo.svg'}
                                 alt={'home-logo'}

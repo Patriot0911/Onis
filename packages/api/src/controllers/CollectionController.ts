@@ -42,9 +42,10 @@ export class CollectionController {
   @Get(':collectionId')
   async get(
     @Param('collectionId', CollectionByIdPipe) collectionId: Types.ObjectId,
-  ): Promise<CollectionResponse> {
+  ): Promise<any> {
     const collection = await this.collectionService.get(collectionId);
-    return CollectionMapper.getCollectionResponse(collection);
+    console.log({ collection });
+    return CollectionMapper.getExtendedCollectionResponse(collection);
   }
 
   @Access('collections.$collectionId.update')

@@ -1,14 +1,12 @@
 import { Collection } from '../schemas/CollectionSchema';
-import {
-  CollectionResponse,
-  CollectionsResponse,
-} from '../responses/CollectionResponse';
+import { CollectionsResponse } from '../responses/CollectionResponse';
 
 export class CollectionMapper {
-  static getCollectionResponse(collection: Collection): CollectionResponse {
+  static getCollectionResponse(collection: any): any {
     return {
-      id: collection.id,
+      id: collection._id,
       title: collection.title,
+      description: collection.description,
       createdAt: collection.createdAt,
     };
   }
@@ -18,6 +16,17 @@ export class CollectionMapper {
   ): CollectionsResponse {
     return {
       collections: collections.map(CollectionMapper.getCollectionResponse),
+    };
+  }
+
+  static getExtendedCollectionResponse(collection: Collection) {
+    return {
+      id: collection._id,
+      title: collection.title,
+      description: collection.description,
+      image: collection.image,
+      participants: collection.participants,
+      createdAt: collection.createdAt,
     };
   }
 }

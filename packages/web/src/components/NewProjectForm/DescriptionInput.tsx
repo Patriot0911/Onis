@@ -1,7 +1,7 @@
 interface DescriptionInputProps {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-};
+}
 
 const DescriptionInput = ({ value, onChange }: DescriptionInputProps) => (
     <label className="flex flex-col">

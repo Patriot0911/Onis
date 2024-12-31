@@ -4,9 +4,15 @@ interface TextInputProps {
     value: string;
     placeholder?: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
-const TextInput = ({ label, name, value, placeholder, onChange }: TextInputProps) => {
+const TextInput = ({
+    label,
+    name,
+    value,
+    placeholder,
+    onChange,
+}: TextInputProps) => {
     return (
         <label className="flex flex-col">
             <span className="text-sm font-medium text-gray-700">{label}</span>

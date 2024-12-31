@@ -16,7 +16,8 @@
         display: flex;
         flex-direction: column;
     }
-    button {
+    .card-button {
+        text-align: center;
         background-color: var(--color-primary);
         &:hover {
             background-color: #3f87f3;

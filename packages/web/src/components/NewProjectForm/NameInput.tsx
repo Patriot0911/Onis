@@ -1,7 +1,7 @@
 interface NameInputProps {
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 const NameInput = ({ value, onChange }: NameInputProps) => (
     <label className="flex flex-col">

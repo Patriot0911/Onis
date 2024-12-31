@@ -2,26 +2,28 @@
 import InnerHeader from '@/components/InnerHeader';
 import InnerLayout from '@/components/InnerLayout';
 import MyCollection from '@/components/MyCollection';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import CollectionsService from '@/services/collections';
+import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 const MyCollectionsPage = () => {
-    const pathname = usePathname();
-    const [collectionId, setCollectionId] = useState<string | undefined>(
-        pathname?.split('/').pop(),
-    );
+    const params = useParams();
+    // const [collection, setCollection] = useState<any | undefined>(undefined);
 
     useEffect(() => {
-        if (!pathname?.split('/').includes('my-collections')) return;
-
-        setCollectionId(pathname.split('/').pop());
-    }, [pathname]);
+        const { collectionId } = params;
+        if (!collectionId || typeof collectionId != 'string') return;
+        (async () => {
+            const res = await CollectionsService.getById(collectionId);
+            console.log({ res });
+        })();
+    }, []);
 
     return (
-        collectionId && (
+        true && (
             <InnerLayout>
                 <InnerHeader />
-                <MyCollection collectionId={collectionId} />
+                <MyCollection collectionId={'collectionId'} />
             </InnerLayout>
         )
     );

@@ -1,10 +1,7 @@
 import InnerLayout from '@/components/InnerLayout';
 
 const CollectionsPage = () => {
-    return (
-        <InnerLayout>
-        </InnerLayout>
-    );
+    return <InnerLayout></InnerLayout>;
 };
 
 export default CollectionsPage;

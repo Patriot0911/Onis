@@ -11,9 +11,7 @@ import { UserData } from '../data/UserData';
 
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Access()
   @Post('collections/:collectionId/toggle')
@@ -31,7 +29,11 @@ export class UsersController {
     @Query('take') take: number,
     @Query('skip') skip: number,
   ): Promise<CollectionsResponse> {
-    const collections = await this.userService.getCollectionsByUserId(user._id, take, skip);
+    const collections = await this.userService.getCollectionsByUserId(
+      user._id,
+      take,
+      skip,
+    );
     return CollectionMapper.getCollectionResponses(collections as any);
   }
 }

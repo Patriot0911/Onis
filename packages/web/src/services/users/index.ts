@@ -10,8 +10,7 @@ class UsersService {
     };
 
     static async getCollections() {
-        if (!this.API_URL)
-            throw new Error('No API found');
+        if (!this.API_URL) throw new Error('No API found');
 
         const res = await fetch(this.UsersRoutes.getCollections, {
             ...this.authProprs,
@@ -21,10 +20,10 @@ class UsersService {
         if (!res.ok) {
             const errorMessage = await res.text();
             throw new Error(`Failed to get collection: ${errorMessage}`);
-        };
+        }
 
         return res.json();
-    };
-};
+    }
+}
 
 export default UsersService;

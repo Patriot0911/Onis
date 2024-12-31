@@ -7,7 +7,14 @@ type TextAreaProps = {
     onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-const TextArea = ({ label, name, value, placeholder, rows = 2, onChange }: TextAreaProps) => {
+const TextArea = ({
+    label,
+    name,
+    value,
+    placeholder,
+    rows = 2,
+    onChange,
+}: TextAreaProps) => {
     return (
         <label className="flex flex-col">
             <span className="text-sm font-medium text-gray-700">{label}</span>

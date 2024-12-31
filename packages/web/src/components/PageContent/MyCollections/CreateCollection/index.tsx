@@ -1,14 +1,14 @@
-import DescriptionInput from "@/components/NewProjectForm/DescriptionInput";
-import ThumbnailInput from "@/components/NewProjectForm/ThumbnailInput";
-import DialogContent from "@/components/ui/Dialog/DialogContent";
-import DialogFooter from "@/components/ui/Dialog/DialogFooter";
-import DialogHeader from "@/components/ui/Dialog/DialogHeader";
-import NameInput from "@/components/NewProjectForm/NameInput";
-import CollectionsService from "@/services/collections";
-import { useDialog } from "@/hooks/useDialog";
-import { useState, useEffect } from "react";
-import { BsPlusLg } from "react-icons/bs";
-import CardWrapper from "./CardWrapper";
+import DescriptionInput from '@/components/NewProjectForm/DescriptionInput';
+import ThumbnailInput from '@/components/NewProjectForm/ThumbnailInput';
+import DialogContent from '@/components/ui/Dialog/DialogContent';
+import DialogFooter from '@/components/ui/Dialog/DialogFooter';
+import DialogHeader from '@/components/ui/Dialog/DialogHeader';
+import NameInput from '@/components/NewProjectForm/NameInput';
+import CollectionsService from '@/services/collections';
+import { useDialog } from '@/hooks/useDialog';
+import { useState, useEffect } from 'react';
+import { BsPlusLg } from 'react-icons/bs';
+import CardWrapper from './CardWrapper';
 
 import styles from './styles.module.scss';
 
@@ -21,8 +21,8 @@ type CreateProject = {
 const CreateCollection = () => {
     const { openDialog } = useDialog();
     const [formData, setFormData] = useState<CreateProject>({
-        title: "",
-        description: "",
+        title: '',
+        description: '',
         thumbnail: null,
     });
     const [isDisabled, setIsDisabled] = useState(true);
@@ -31,7 +31,9 @@ const CreateCollection = () => {
         setIsDisabled(formData.title.trim() === '');
     }, [formData.title]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
@@ -48,10 +50,11 @@ const CreateCollection = () => {
 
         if (isDisabled) {
             return;
-        };
+        }
 
         try {
-            const response = await CollectionsService.createCollection(formData);
+            const response =
+                await CollectionsService.createCollection(formData);
             console.log('Project created:', response);
         } catch (error) {
             console.error('Failed to create project:', error);
@@ -60,13 +63,8 @@ const CreateCollection = () => {
 
     return (
         <>
-            <CardWrapper
-                handle={() => openDialog()}
-            >
-                <div
-                    className={styles['wrapper']}
-                    onClick={() => {}}
-                >
+            <CardWrapper handle={() => openDialog()}>
+                <div className={styles['wrapper']} onClick={() => {}}>
                     <BsPlusLg />
                     <span>Додати колекцію</span>
                 </div>
@@ -88,15 +86,16 @@ const CreateCollection = () => {
                         <ThumbnailInput
                             thumbnail={formData.thumbnail}
                             onChange={handleFileChange}
-                            onFileClick={() => document.getElementById("file-input")?.click()}
+                            onFileClick={() =>
+                                document.getElementById('file-input')?.click()
+                            }
                         />
                     </div>
                     <DialogFooter className="px-0">
                         <button
                             type="submit"
                             className="bg-primary text-white rounded px-4 py-2 hover:bg-secondary disabled:bg-gray"
-                            disabled={isDisabled}
-                        >
+                            disabled={isDisabled}>
                             Create Project
                         </button>
                     </DialogFooter>
